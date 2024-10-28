@@ -1,0 +1,31 @@
+<ion-app>
+    <ion-menu contentId="main-content">
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Menú</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list>
+          <ion-item routerLink="/home">
+            <ion-icon slot="start" name="home"></ion-icon>
+            Inicio
+          </ion-item>
+          <ion-item routerLink="/estructura-organizacional">
+            <ion-icon slot="start" name="git-network"></ion-icon>
+            Estructura Organizacional
+          </ion-item>
+          <ion-item routerLink="/gerencias">
+            <ion-icon slot="start" name="briefcase"></ion-icon>
+            Gerencias
+          </ion-item>
+          <ion-item routerLink="/empleados">
+            <ion-icon slot="start" name="people"></ion-icon>
+            Empleados
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-app>
+  

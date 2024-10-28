@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Empleados</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">empleados</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item *ngFor="let empleado of empleados">
+        <ion-label>
+          <h2>{{ empleado.nombre }}</h2>
+          <h3>{{ empleado.cargo }}</h3>
+          <p>{{ empleado.departamento }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-button expand="full" color="primary" routerLink="/agregar-empleado">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Agregar Nuevo Empleado
+    </ion-button>
+
+
+  </ion-content>
+</ion-content>

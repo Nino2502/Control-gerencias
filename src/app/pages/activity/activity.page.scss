@@ -1,0 +1,94 @@
+
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Centra el botón horizontalmente */
+    align-items: center;     /* Alinea el botón verticalmente */
+          /* Altura completa para centrar en la pantalla */
+  }
+  
+  ion-button {
+    --background: #3880ff; /* Cambia el color de fondo del botón */
+    --color: white;        /* Cambia el color del texto */
+    padding: 10px;    /* Espaciado interno */
+    border-radius: 8px;    /* Bordes redondeados */
+    font-size: 16px;       /* Tamaño de texto */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Sombra suave */
+  
+    /* Efecto hover */
+    &:hover {
+      --background: #4c8dff; /* Cambia el color cuando pasas el cursor encima */
+    }
+  }
+
+
+  ion-content {
+    --background: #ffffff; // fondo claro
+  }
+  
+  ion-label {
+    color: #000000; // texto oscuro para mayor contraste
+  }
+  
+  ion-button {
+    --background: #005cbf; // botón con alto contraste
+    --color: #ffffff; // texto blanco en el botón
+  }
+
+
+
+
+  ion-content {
+    /*
+    Esto asegura que haya un espacio alrededor del contenido en diferentes pantallas.
+    */
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    --padding-left: 10px;
+    --padding-right: 10px;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  ion-button {
+    width: 100%;
+    max-width: 300px; /* Asegura que los botones no sean demasiado grandes en pantallas grandes */
+  }
+
+  /* Media queries para ajustar el diseño en dispositivos pequeños */
+  @media (max-width: 600px) {
+    ion-item {
+      font-size: 0.9rem;
+    }
+
+    .button-container {
+      margin-top: 10px;
+    }
+
+    ion-input, ion-datetime {
+      font-size: 0.9rem;
+    }
+  }
+
+  /*
+  Es diferentes tamaños de fuentes y espaciado para pantallas pequeñas y grandes
+  */
+  @media (min-width: 600px) {
+    ion-title {
+      font-size: 2rem;
+    }
+
+    ion-item {
+      font-size: 1.1rem;
+    }
+
+    ion-input, ion-datetime {
+      font-size: 1.1rem;
+    }
+  }
+  
+  

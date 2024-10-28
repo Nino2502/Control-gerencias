@@ -1,0 +1,46 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Actividades del usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large" id="actividadesTitulo">Actividades del usuario</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list aria-labelledby="actividadesTitulo">
+    <ion-item>
+      <ion-label position="stacked" id="nombreActividadLabel">Nombre de la actividad</ion-label>
+      <ion-input aria-labelledby="nombreActividadLabel" [(ngModel)]="nueva_actividad.name" placeholder="Ej: Correr"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked" id="duracionActividadLabel">Duración (minutos)</ion-label>
+      <ion-input aria-labelledby="duracionActividadLabel" type="number" [(ngModel)]="nueva_actividad.duration" placeholder="Ej: 30"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-datetime aria-labelledby="fechaActividadLabel" [(ngModel)]="nueva_actividad.date" display-format="YYYY-MM-DD"></ion-datetime>
+    </ion-item>
+
+    <div class="button-container">
+      <ion-button expand="block" (click)="addActivity()" aria-label="Agregar Actividad">Agregar Actividad</ion-button>
+    </div>
+  </ion-list>
+
+  <ion-list aria-labelledby="actividadesRegistradas">
+    <ion-list-header id="actividadesRegistradas">Actividades Registradas</ion-list-header>
+    <ion-item *ngFor="let activity of activities_usuario">
+      <ion-label>
+        <h2>{{ activity.name }}</h2>
+        <p>Duración: {{ activity.duration }} minutos</p>
+        <p>Fecha: {{ activity.date }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+

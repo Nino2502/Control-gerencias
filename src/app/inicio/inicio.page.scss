@@ -1,0 +1,102 @@
+.login-page {
+    --background: #e0f7fa; /* Fondo azul claro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+  
+    .login-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+      margin-top: 30px;
+      margin-left: 500px;
+      margin-right: 500px;
+
+
+    }
+  
+    .login-box {
+      width: 100%;
+      text-align: center;
+    }
+  
+    .login-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #0077b6; /* Azul oscuro para el título */
+      margin-bottom: 0.5rem;
+    }
+  
+    .login-subtitle {
+      font-size: 16px;
+      color: #0096c7; /* Azul medio para el subtítulo */
+      margin-bottom: 2rem;
+    }
+  
+    .input-item {
+      margin-bottom: 1.5rem;
+  
+      ion-label {
+        color: #0077b6; /* Color azul para el texto de los labels */
+      }
+  
+      ion-input {
+        --background: #f0f4f8; /* Fondo claro para los inputs */
+        --border-radius: 10px; /* Bordes redondeados para los inputs */
+        --padding-start: 2rem; /* Espacio para los iconos */
+        border: 1px solid #b0e0e6; /* Borde azul suave */
+        color: #333; /* Color del texto */
+      }
+  
+      ion-icon {
+        color: #0077b6; /* Azul oscuro para los iconos */
+        font-size: 20px; /* Tamaño de los iconos */
+      }
+    }
+  
+    .login-button {
+      --border-radius: 20px;
+      --padding-start: 20px;
+      --padding-end: 20px;
+      font-weight: 600;
+      background-color: #0077b6; /* Azul oscuro para el botón */
+      color: white;
+      transition: background-color 0.3s ease; /* Transición suave en hover */
+  
+      &:hover {
+        background-color: #005f99; /* Color más oscuro en hover */
+      }
+    }
+  
+    .forgot-password {
+      margin-top: 1rem;
+      a {
+        color: #0077b6; /* Azul oscuro para el enlace */
+        text-decoration: none;
+  
+        &:hover {
+          text-decoration: underline; /* Subrayado en hover */
+        }
+      }
+    }
+  }
+
+  .correo_texto{
+    
+
+    margin-right: 70px;
+    color: #005f99;
+
+
+}
+.contra_texto{
+    margin-right: 115px;
+    color: #005f99;
+}  

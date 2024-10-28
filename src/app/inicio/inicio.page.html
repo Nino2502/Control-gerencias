@@ -1,0 +1,44 @@
+<ion-content class="login-page">
+  <div class="login-wrapper">
+    <div class="login-box">
+      <h1 class="login-title">Strategia Gerencial</h1>
+      <p class="login-subtitle">Inicio De Sesion</p>
+
+      <form (ngSubmit)="entrar_inicio()" #loginForm="ngForm">
+        <!-- Input de correo electrónico con icono -->
+        <ion-label class="correo_texto">Correo electrónico</ion-label>
+        <ion-item class="input-item">
+          <ion-input type="email" placeholder="usuario@correo.com" [(ngModel)]="email" name="email" required></ion-input>
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+        </ion-item>
+
+        <!-- Mensaje de error para el correo -->
+        <ion-text color="danger" *ngIf="loginForm.controls['email']?.invalid && loginForm.controls['email']?.touched">
+         Correo electrónico inválido.
+        </ion-text>
+
+        <ion-label class="contra_texto">Contraseña</ion-label>
+        <!-- Input de contraseña con icono -->
+        <ion-item class="input-item">
+          <ion-input type="password" placeholder="••••••••" [(ngModel)]="password" name="password" required></ion-input>
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        </ion-item>
+
+        <!-- Mensaje de error para la contraseña -->
+        <ion-text color="danger" *ngIf="loginForm.controls['password']?.invalid && loginForm.controls['password']?.touched">
+          Contraseña incorrecta
+        </ion-text>
+
+        <!-- Botón de Ingresar -->
+        <ion-button expand="block" color="primary" type="submit" class="login-button">Ingresar</ion-button>
+
+        <!-- Enlace de recuperación de contraseña -->
+        <ion-text class="forgot-password">
+          <a href="#">¿Olvidaste tu contraseña?</a>
+        </ion-text>
+      </form>
+    </div>
+  </div>
+</ion-content>
+
+
