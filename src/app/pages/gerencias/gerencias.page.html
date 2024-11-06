@@ -10,7 +10,32 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">gerencias</ion-title>
+      <ion-title size="large">Gerencias</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-content>
+
+    <div *ngIf="data.length === 0" class="cero-gerencias">
+      <p>No Hay gerencias</p>
+
+    </div>
+    <ion-list>
+      <ion-item *ngFor="let gerencias of data;">
+        <ion-label>
+          <h2>{{ gerencias.id }}</h2>
+          <h3>{{ gerencias.nombre }}</h3>
+          <p>{{ gerencias.descripcion}}</p>
+        </ion-label>
+
+        <ion-button fill="clear" color="secondary" (click)="editarGerencias(gerencias)">
+          <ion-icon slot="icon-only" name="create"></ion-icon>
+        </ion-button>
+      
+        <ion-button fill="clear" color="danger" (click)="eliminarGerencias(gerencias.id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-button>
+
+      </ion-item>
+    </ion-list>
+  </ion-content>
 </ion-content>

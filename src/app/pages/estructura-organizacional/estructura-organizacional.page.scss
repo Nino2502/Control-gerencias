@@ -1,0 +1,25 @@
+ion-content {
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Degradado de color */
+    color: white; /* Color del texto */
+}
+h1{
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: black;
+
+}
+.container {
+    padding: 20px; /* Espaciado interno */
+    text-align: center; /* Centra el texto */
+    /* Puedes añadir un fondo semitransparente si deseas que el texto sea más legible */
+    background: rgba(255, 255, 255, 0.1); /* Fondo blanco semitransparente */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+.copyright{
+
+    margin-top: 30px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+    text-align: center;
+}

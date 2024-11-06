@@ -7,30 +7,55 @@
   </ion-toolbar>
 </ion-header>
 
-
-
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">empleados</ion-title>
+      <ion-title size="large">Empleados</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content>
-    <ion-list>
-      <ion-item *ngFor="let empleado of empleados">
-        <ion-label>
-          <h2>{{ empleado.nombre }}</h2>
-          <h3>{{ empleado.cargo }}</h3>
-          <p>{{ empleado.departamento }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
 
-    <ion-button expand="full" color="primary" routerLink="/agregar-empleado">
-      <ion-icon slot="start" name="add"></ion-icon>
-      Agregar Nuevo Empleado
-    </ion-button>
+  <div *ngIf="data_empleados.length === 0" class="no-empleados">
+    <p>No hay empleados registrados</p>
+  </div>
 
+  <ion-list *ngIf="data_empleados.length > 0">
+    <ion-item *ngFor="let empleado of data_empleados">
+      <ion-label>
+        <h3><strong>ID:</strong> {{ empleado.employee_id }}</h3>
+        <p><strong>Nombre:</strong> {{ empleado.first_name }}</p>
+        <p><strong>Apellidos: </strong> {{ empleado.last_name }}</p>
+        <p><strong>Email: </strong> {{ empleado.email }}</p>
+        <p><strong>Phone: </strong> {{ empleado.phone }}</p>
+        <p><strong>Departamento:</strong> {{ empleado.department_name }}</p>
+        <p><strong>Posicion: </strong>{{ empleado.position_name }}</p>
+ 
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button fill="clear" color="secondary" (click)="editarEmpleado(empleado)">
+          <ion-icon slot="icon-only" name="create"></ion-icon>
+        </ion-button>
+        <ion-button (click)="changeStatus(empleado.employee_id, empleado.status)">
+            <ion-icon 
+            *ngIf="empleado.status == 1" 
+            name="checkmark-circle" 
+            color="success">
+          </ion-icon>
+          <ion-icon 
+            *ngIf="empleado.status != 1" 
+            name="close-circle" 
+            color="danger">
+          </ion-icon>
+        
+        </ion-button>
+        <ion-button fill="clear" color="danger" (click)="eliminarEmpleado(empleado.employee_id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
 
-  </ion-content>
+  <ion-button expand="block" color="primary" (click)="agregarEmpleado()" id="boton_agregar">
+    <ion-icon slot="start" name="add"></ion-icon>
+    Agregar Nuevo Empleado
+  </ion-button>
 </ion-content>
