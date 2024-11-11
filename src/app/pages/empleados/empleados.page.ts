@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+
+
 import axios from 'axios';
 import qs from 'qs';
-
+import { CameraComponent } from '../../components/camera/camera.component';
 
 
 @Component({
@@ -62,25 +64,42 @@ export class EmpleadosPage implements OnInit {
               department_name: data.department_name,
               position_name: data.position_name
             };
-  
-            try {
-              // Envía los datos al servidor usando Axios
+
+            try{
+
+              const response = await axios.put(
+                'http://localhost/quicky_coffee/proyecto_escuela/Empleados/editar_empleado',
+                updatedData,
+                { headers: { 'Content-Type': 'application/json' } }
+               );
+
+               if(response.data.status == 'success'){
+
+                console.log("El empleado se actualizo correctamente");
+                await this.showAlert('Éxito', 'Empleado se edito correctamente.', true);
+
+               }else{
 
 
-              console.log("Soy data editado empleado", updatedData);
-              return;
-              
-              const response = await axios.put(`http://tu-servidor/api/empleados/${updatedData.employee_id}`, updatedData);
-  
-              if (response.status === 200) {
-                // Actualiza el objeto empleado localmente con los nuevos valores
-                Object.assign(empleado, updatedData); // Actualiza empleado con los nuevos valores
-                // Puedes mostrar un mensaje de éxito aquí
-              }
-            } catch (error) {
-              console.error('Error al actualizar el empleado', error);
-              // Maneja el error, muestra un mensaje al usuario, etc.
+                console.log("Error a editar el usuario");
+
+                await this.showAlert('Error', 'No se pudo editar el usuario.', true);
+
+
+               }
+
+
+
+
+            }catch(error){
+
+              console.error('Error al actualizar el empleado:', error);
+
+
             }
+            
+  
+           
           }
         }
       ]

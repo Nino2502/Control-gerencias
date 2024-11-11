@@ -1,9 +1,10 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'evaluacion1',
-  webDir: 'www'
+  appId: 'com.controlgerencias.com',
+  appName: 'Control-gerencias',
+  webDir: 'www',
+  bundledWebRuntime: false // Asegúrate de que este valor esté establecido en false
 };
 
 export default config;
