@@ -20,15 +20,24 @@
       Estructura Organizacional
     </h1>
 
-    <img src="assets/estructura.jpg" alt="Estructura Organizacional" class="imagen-container">
-    
-    <div class="copyright">
-  
-      <p>&copy; 2024 Strategia Gerencial. Todos los derechos reservados.</p>
+    <ion-list *ngIf="data_estructura.length > 0">
+      <ion-card *ngFor="let estructura of data_estructura">
+        <ion-card-header>
+          <ion-card-title>{{ estructura.employee_name }}</ion-card-title>
+          <ion-card-subtitle>{{ estructura.position_name }} en {{ estructura.department_name }}</ion-card-subtitle>
+        </ion-card-header>
+        
+        <ion-card-content>
+          <p><strong>Fecha de inicio:</strong> {{ estructura.start_date | date }}</p>
+          <p *ngIf="estructura.end_date"><strong>Fecha de fin:</strong> {{ estructura.end_date | date }}</p>
+          <p><strong>Estatus:</strong> {{ estructura.status === '1' ? 'Activo' : 'Inactivo' }}</p>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
 
-
-      
-    </div>
+    <ion-item *ngIf="data_estructura.length === 0">
+      <ion-label>No se encontraron registros.</ion-label>
+    </ion-item>
 
   </div>
   
