@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-
-
 import axios from 'axios';
-import qs from 'qs';
-import { CameraComponent } from '../../components/camera/camera.component';
-
 
 @Component({
   selector: 'app-empleados',
@@ -13,28 +8,27 @@ import { CameraComponent } from '../../components/camera/camera.component';
   styleUrls: ['./empleados.page.scss'],
 })
 export class EmpleadosPage implements OnInit {
-
   data_empleados: any[] = [];
   newItem: string = '';
   errorMessage: string = '';
-
+  departamentos: any[] = [];
+  positions: any[] = [];
 
   constructor(private alertController: AlertController) {}
 
   ngOnInit() {
-
-    this.fetchdata_empleados()
+    this.fetchdata_empleados();
+    this.fetchPositions();
+    this.fetchDepartamentos();
   }
 
-  async opciones_newUser(){
-    try{
-
-      const departamentos_opciones = await axios.get('http://localhost/quicky_coffee/proyecto_escuela/Departamentos/get_departamentos');
-
-
-    } catch(error){
-
-      
+  async opciones_newUser() {
+    try {
+      const departamentos_opciones = await axios.get(
+        'http://localhost/quicky_coffee/proyecto_escuela/Departamentos/get_departamentos'
+      );
+    } catch (error) {
+      console.error('Error en opciones_newUser:', error);
     }
   }
 
@@ -48,7 +42,7 @@ export class EmpleadosPage implements OnInit {
         { name: 'email', type: 'email', placeholder: 'Email', value: empleado.email },
         { name: 'phone', type: 'tel', placeholder: 'Teléfono', value: empleado.phone },
         { name: 'department_name', type: 'text', placeholder: 'Departamento', value: empleado.department_name },
-        { name: 'position_name', type: 'text', placeholder: 'Posición', value: empleado.position_name }
+        { name: 'position_name', type: 'text', placeholder: 'Posición', value: empleado.position_name },
       ],
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
@@ -56,248 +50,209 @@ export class EmpleadosPage implements OnInit {
           text: 'Guardar',
           handler: async (data) => {
             const updatedData = {
-              employee_id: empleado.employee_id,  // Asegúrate de incluir el ID del empleado
+              employee_id: empleado.employee_id,
               first_name: data.first_name,
               last_name: data.last_name,
               email: data.email,
               phone: data.phone,
               department_name: data.department_name,
-              position_name: data.position_name
+              position_name: data.position_name,
             };
 
-            try{
-
+            try {
               const response = await axios.put(
                 'http://localhost/quicky_coffee/proyecto_escuela/Empleados/editar_empleado',
                 updatedData,
                 { headers: { 'Content-Type': 'application/json' } }
-               );
+              );
 
-               if(response.data.status == 'success'){
-
-                console.log("El empleado se actualizo correctamente");
-                await this.showAlert('Éxito', 'Empleado se edito correctamente.', true);
-
-               }else{
-
-
-                console.log("Error a editar el usuario");
-
-                await this.showAlert('Error', 'No se pudo editar el usuario.', true);
-
-
-               }
-
-
-
-
-            }catch(error){
-
+              if (response.data.status === 'success') {
+                await this.showAlert('Éxito', 'Empleado se editó correctamente.', true);
+              } else {
+                await this.showAlert('Error', 'No se pudo editar el usuario.', false);
+              }
+            } catch (error) {
               console.error('Error al actualizar el empleado:', error);
-
-
             }
-            
-  
-           
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
     await alert.present();
   }
-  
-  
-
-
 
   async agregarEmpleado() {
     const alert = await this.alertController.create({
-        header: 'Agregar nuevo empleado',
-        inputs: [
-            { name: 'first_name', type: 'text', placeholder: 'Nombre', value: '' },
-            { name: 'last_name', type: 'text', placeholder: 'Apellidos', value: '' },
-            { name: 'email', type: 'email', placeholder: 'Email', value: '' },
-            { name: 'phone', type: 'tel', placeholder: 'Teléfono', value: '' },
-            { name: 'department_id', type: 'text', placeholder: 'Departamento', value: '' },
-            { name: 'position_id', type: 'text', placeholder: 'Posición', value: '' },
-        ],
-        buttons: [
-            { text: 'Cancelar', role: 'cancel' },
-            {
-                text: 'Guardar',
-                handler: async (data) => {  // Cambiamos a función async
-                    const newData = {
-                        first_name: data.first_name,
-                        last_name: data.last_name,
-                        email: data.email,
-                        phone: data.phone,
-                        department_id: data.department_id,
-                        position_id: data.position_id
-                    };
-
-                    try {
-                        const response = await axios.post(
-                            'http://localhost/quicky_coffee/proyecto_escuela/Empleados/agregar_empleado',
-                            newData,
-                            { headers: { 'Content-Type': 'application/json' } }
-                        );
-
-                        if (response.data.status === "success") {
-                            console.log("Se insertó el usuario correctamente");
-                            await this.showAlert('Éxito', 'Empleado guardado correctamente.', true);
-                           
-
-                        } else {
-                            console.error('Error al guardar el empleado:', response.data.message);
-                            await this.showAlert('Error', 'No se pudo guardar el empleado: ' , false);
-                        }
-                    } catch (error) {
-                        console.error("Error de base de datos", error);
-                        await this.showAlert('Error', 'Hubo un problema con la base de datos.', false);
-                    }
-                }
+      header: 'Agregar nuevo empleado',
+      inputs: [
+        { name: 'first_name', type: 'text', placeholder: 'Nombre', value: '' },
+        { name: 'last_name', type: 'text', placeholder: 'Apellidos', value: '' },
+        { name: 'email', type: 'email', placeholder: 'Email', value: '' },
+        { name: 'phone', type: 'tel', placeholder: 'Teléfono', value: '' },
+        // Separador para Departamentos
+        { name: 'separator', type: 'text', value: '--- Departamentos ---', disabled: true },
+        // Opciones de Departamentos
+        ...this.departamentos.map((dep) => ({
+          name: 'department_id',
+          type: 'radio' as const,
+          label: dep.name,
+          value: dep.department_id,
+        })),
+        // Separador para Posiciones
+        { name: 'separator', type: 'text', value: '--- Posiciones ---', disabled: true },
+        // Opciones de Posiciones
+        ...this.positions.map((pos) => ({
+          name: 'position_id',
+          type: 'radio' as const,
+          label: pos.name,
+          value: pos.position_id,
+        })),
+      ],
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Guardar',
+          handler: async (data) => {
+            const newData = {
+              first_name: data.first_name,
+              last_name: data.last_name,
+              email: data.email,
+              phone: data.phone,
+              department_id: data.department_id,
+              position_id: data.position_id,
+            };
+  
+            try {
+              const response = await axios.post(
+                'http://localhost/quicky_coffee/proyecto_escuela/Empleados/agregar_empleado',
+                newData,
+                { headers: { 'Content-Type': 'application/json' } }
+              );
+  
+              if (response.data.status === 'success') {
+                await this.showAlert('Éxito', 'Empleado guardado correctamente.', true);
+              } else {
+                await this.showAlert('Error', 'No se pudo guardar el empleado.', false);
+              }
+            } catch (error) {
+              console.error('Error al guardar empleado:', error);
+              await this.showAlert('Error', 'Hubo un problema con la base de datos.', false);
             }
-        ],
+          },
+        },
+      ],
     });
     await alert.present();
-}
-
-  async fetchdata_empleados(){
-
-    try{
-      const response = await axios.get('http://localhost/quicky_coffee/proyecto_escuela/Empleados/get_empleados');
-
-      this.data_empleados = response.data;
-
-      console.log("Soy empleados . ", this.data_empleados);
-
-      
-    }catch(error){
-      this.errorMessage = 'Error fetching data';
-      console.log(error);
-
-
+  }
+  
+  async fetchDepartamentos() {
+    try {
+      const response = await axios.get('http://localhost/quicky_coffee/proyecto_escuela/Empleados/departamentos');
+      this.departamentos = response.data;
+      console.log('Departamentos:', this.departamentos);
+    } catch (error) {
+      console.error('Error en fetchDepartamentos:', error);
     }
-
-
-
   }
 
-  // Método para mostrar alertas
+  async fetchPositions() {
+    try {
+      const response = await axios.get('http://localhost/quicky_coffee/proyecto_escuela/Empleados/positions');
+      this.positions = response.data;
+      console.log('Positions:', this.positions);
+    } catch (error) {
+      console.error('Error en fetchPositions:', error);
+    }
+  }
+
+  async fetchdata_empleados() {
+    try {
+      const response = await axios.get('http://localhost/quicky_coffee/proyecto_escuela/Empleados/get_empleados');
+      this.data_empleados = response.data;
+      console.log('Empleados:', this.data_empleados);
+    } catch (error) {
+      this.errorMessage = 'Error fetching data';
+      console.error(error);
+    }
+  }
+
   async showAlert(header: string, message: string, reload: boolean = false) {
     const alert = await this.alertController.create({
-        header: header,
-        message: message,
-        buttons: [{
-            text: 'OK',
-            handler: () => {
-                if (reload) {
-                    location.reload();
-                }
+      header,
+      message,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            if (reload) {
+              location.reload();
             }
-        }]
+          },
+        },
+      ],
     });
     await alert.present();
-}
+  }
 
-
-  async changeStatus(id: number, estatus: number){
-
-    const id_epleado = id;
-    console.log("Soy id empleado . .", id_epleado);
-    const status_nuevo = estatus;
-
-    console.log("Soi el estatus .. ", status_nuevo);
-
-
+  async changeStatus(id: number, estatus: number) {
     const alert = await this.alertController.create({
       header: 'Cambiar estatus del empleado',
       buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        },
+        { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Aceptar',
           handler: async () => {
             try {
               const response = await axios.post(
                 'http://localhost/quicky_coffee/proyecto_escuela/Empleados/changeStatus',
-                { employee_id: id_epleado, status: status_nuevo },
+                { employee_id: id, status: estatus },
                 { headers: { 'Content-Type': 'application/json' } }
               );
 
-              console.log("Soy Response. . ", response);
-              
-
-  
-              if (response.data.status === "success") {
-                console.log("Empleado eliminado correctamente");
-                await this.showAlert('Éxito', 'El estatus se cambio correctamente', true);
+              if (response.data.status === 'success') {
+                await this.showAlert('Éxito', 'Estatus cambiado correctamente.', true);
               } else {
-                console.error('Error al cambiar estatus', response.data.message);
-                await this.showAlert('Error', response.data.message, false);
+                await this.showAlert('Error', 'No se pudo cambiar el estatus.', false);
               }
-  
             } catch (error) {
-              console.error("Error de base de datos", error);
+              console.error('Error al cambiar estatus:', error);
               await this.showAlert('Error', 'Hubo un problema con la base de datos.', false);
             }
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
-
     await alert.present();
-
-
-
-
-
-
   }
 
   async eliminarEmpleado(id: number) {
-    console.log("Soy borrar usuario . . .", id);
-  
-    const id_empleado = id;
-  
     const alert = await this.alertController.create({
       header: 'Seguro que quieres borrar el usuario?',
       buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        },
+        { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Aceptar',
           handler: async () => {
             try {
               const response = await axios.post(
                 'http://localhost/quicky_coffee/proyecto_escuela/Empleados/eliminar_empleado',
-                { employee_id: id_empleado }, // Aquí pasas el ID del empleado como parte del objeto
+                { employee_id: id },
                 { headers: { 'Content-Type': 'application/json' } }
               );
-  
-              if (response.data.status === "success") {
-                console.log("Empleado eliminado correctamente");
+
+              if (response.data.status === 'success') {
                 await this.showAlert('Éxito', 'Empleado eliminado correctamente.', true);
               } else {
-                console.error('Error al eliminar el empleado:', response.data.message);
-                await this.showAlert('Error', response.data.message, false);
+                await this.showAlert('Error', 'No se pudo eliminar el empleado.', false);
               }
-  
             } catch (error) {
-              console.error("Error de base de datos", error);
+              console.error('Error al eliminar empleado:', error);
               await this.showAlert('Error', 'Hubo un problema con la base de datos.', false);
             }
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
-  
     await alert.present();
   }
-  
 }
