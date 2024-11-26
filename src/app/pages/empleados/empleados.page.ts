@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import axios from 'axios';
 
+import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
+
 @Component({
   selector: 'app-empleados',
   templateUrl: './empleados.page.html',
@@ -13,7 +15,7 @@ export class EmpleadosPage implements OnInit {
   errorMessage: string = '';
   departamentos: any[] = [];
   positions: any[] = [];
-
+  capturedImage: string | undefined;
   constructor(private alertController: AlertController) {}
 
   ngOnInit() {
@@ -31,6 +33,35 @@ export class EmpleadosPage implements OnInit {
       console.error('Error en opciones_newUser:', error);
     }
   }
+  async takePicture(employeeId: number) {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera,
+      });
+
+    
+      const empleado = this.data_empleados.find(emp => emp.employee_id === employeeId);
+
+      console.log("Yo soy el EMPLEADO . . .", empleado);
+
+
+      if (empleado) {
+
+        console.log("Entro en el primer if . .");
+        
+        empleado.capturedImage = image.dataUrl; // Asigna la imagen capturada al empleado
+      }
+
+      // Aquí podrías enviar la imagen al backend si es necesario
+      // await axios.post('URL_DEL_BACKEND', { employeeId, image: image.dataUrl });
+    } catch (error) {
+      console.error('Error al capturar imagen:', error);
+    }
+  }
+
 
   async editarEmpleado(empleado: any) {
     const alert = await this.alertController.create({

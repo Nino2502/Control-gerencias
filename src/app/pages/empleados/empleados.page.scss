@@ -17,6 +17,15 @@ ion-row{
 
 }
 
+img {
+    max-width: 100px; // Ajusta el ancho máximo
+    max-height: 100px; // Ajusta el alto máximo
+    border-radius: 8px; // Opcional: esquinas redondeadas
+    object-fit: cover; // Para mantener la proporción dentro del tamaño
+    margin: 5px; // Espaciado alrededor de la imagen
+  }
+
+  
 #boton_agregar{
 
     
