@@ -9,15 +9,19 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-  <div class="container">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Bienvenido a Strategia Gerencial</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Visualiza tus actividades por hacer.</p>
-        <ion-button expand="block" routerLink="/activity">Ver Actividad</ion-button>
-      </ion-card-content>
-    </ion-card>
-  </div>
+
+
+ 
+    <div class="container">
+      <div *ngIf="weatherData">
+        <h2>Weather in {{ city }}</h2>
+        <p>Temperature: {{ weatherData.main.temp }} °C</p>
+        <p>Weather: {{ weatherData.weather[0].description }}</p>
+      </div>
+      <div *ngIf="!weatherData">
+        <p>Loading weather data...</p>
+      </div>
+    </div>
+
+
 </ion-content>

@@ -67,5 +67,12 @@ export class InicioPage implements OnInit {
     }
 
 
+    goToHome() {
+      this.navCtrl.navigateForward(['/home']);
+    }
+
+
+
+
   }
 
