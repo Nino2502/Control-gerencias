@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WeatherService } from '../home/weather.service';  // Asegúrate de importar el servicio correctamente
+import { WeatherService } from '../home/weather.service'; // Asegúrate de importar el servicio correctamente
 import { Geolocation } from '@capacitor/geolocation';
 
 @Component({
@@ -8,18 +8,21 @@ import { Geolocation } from '@capacitor/geolocation';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  city: string = 'mexico';  // O cualquier ciudad por defecto
+  city: string = 'mexico'; // Ciudad por defecto
   weatherData: any;
 
   center: google.maps.LatLngLiteral = { lat: 0, lng: 0 }; // Coordenadas iniciales
   zoom = 12; // Nivel de zoom
   markerOptions: google.maps.MarkerOptions = { draggable: false }; // Configuración del marcador
   markerPosition: google.maps.LatLngLiteral | null = null; // Posición del marcador
+  latitude: number | null = null;
+  longitude: number | null = null;
 
   constructor(private weatherService: WeatherService) {}
 
-  ngOnInit() {
-    this.getWeatherData();
+  async ngOnInit() {
+    await this.getCurrentPosition(); // Obtener ubicación actual
+    this.getWeatherData(); // Obtener datos del clima después de la ubicación
   }
 
   async getWeatherData() {
@@ -31,14 +34,16 @@ export class HomePage implements OnInit {
     }
   }
 
-  async getCurrentLocation() {
+  async getCurrentPosition() {
     try {
       const position = await Geolocation.getCurrentPosition();
-      this.center = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      };
-      this.markerPosition = this.center; // Colocar el marcador en la ubicación actual
+      this.latitude = position.coords.latitude;
+      this.longitude = position.coords.longitude;
+
+      // Configurar el centro del mapa y el marcador
+      this.center = { lat: this.latitude, lng: this.longitude };
+      this.markerPosition = this.center;
+
       console.log('Ubicación actual:', this.center);
     } catch (error) {
       console.error('Error obteniendo ubicación:', error);
