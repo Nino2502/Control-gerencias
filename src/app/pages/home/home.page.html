@@ -14,14 +14,30 @@
  
     <div class="container">
       <div *ngIf="weatherData">
-        <h2>Weather in {{ city }}</h2>
-        <p>Temperature: {{ weatherData.main.temp }} °C</p>
-        <p>Weather: {{ weatherData.weather[0].description }}</p>
+        <h2>El clima en {{ city }}</h2>
+        <p>Temperatura: {{ weatherData.main.temp }} °C</p>
+        <p>Tiempo: {{ weatherData.weather[0].description }}</p>
       </div>
       <div *ngIf="!weatherData">
-        <p>Loading weather data...</p>
+        <p>Cargando pronostico del clima...</p>
       </div>
     </div>
 
+    <div class="map-wrapper">
+      <div class="map-container">
+        <google-map
+          [height]="'400%'"
+          [width]="'400%'"
+          [center]="center"
+          [zoom]="zoom"
+        >
+          <map-marker
+            *ngIf="markerPosition"
+            [position]="markerPosition"
+            [options]="markerOptions"
+          ></map-marker>
+        </google-map>
+      </div>
+    </div>
 
 </ion-content>

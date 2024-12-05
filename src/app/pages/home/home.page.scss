@@ -11,4 +11,20 @@
     }
    }
 
-   
+
+
+  .map-wrapper {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;    /* Centra verticalmente */
+    height: 100%;           /* Ocupa toda la altura disponible */
+  }
+  
+  .map-container {
+    width: 900px;           /* Ancho del mapa */
+    height: 600px;          /* Alto del mapa */
+    border: 1px solid #ccc; /* Opcional: agrega un borde */
+    border-radius: 10px;    /* Esquinas redondeadas */
+    overflow: hidden;       /* Evita que los bordes sobresalgan */
+  }
+  

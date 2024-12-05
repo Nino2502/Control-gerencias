@@ -8,12 +8,15 @@ import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
 
+import { GoogleMapsModule } from '@angular/google-maps';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    GoogleMapsModule, 
   ],
   declarations: [HomePage]
 })
