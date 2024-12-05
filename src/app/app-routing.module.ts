@@ -31,7 +31,11 @@ const routes: Routes = [
   {
     path: 'estructura-organizacional',
     loadChildren: () => import('./pages/estructura-organizacional/estructura-organizacional.module').then( m => m.EstructuraOrganizacionalPageModule)
+  },  {
+    path: 'registro',
+    loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
   },
+
 
 
 ];

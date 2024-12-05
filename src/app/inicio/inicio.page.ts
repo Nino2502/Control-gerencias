@@ -71,6 +71,12 @@ export class InicioPage implements OnInit {
       this.navCtrl.navigateForward(['/home']);
     }
 
+    registro_usuario(){
+
+      this.navCtrl.navigateForward(['/registro']);
+      
+    }
+
 
 
 

@@ -1,0 +1,115 @@
+<ion-content class="login-page">
+  <div class="login-wrapper">
+    <div class="login-box">
+      <h1 class="login-title">Strategia Gerencial</h1>
+      <p class="login-subtitle">Registro de usuario</p>
+
+      <form (ngSubmit)="registrar_usuario()" #loginForm="ngForm">
+
+
+                <!-- Input de Nombre con icono -->
+        <ion-label class="correo_texto">Nombre</ion-label>
+        <ion-item class="input-item">
+          <ion-input type="name" placeholder="Nombre" [(ngModel)]="name" name="name" required></ion-input>
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+        </ion-item>
+
+        <!-- Mensaje de error para el nombre -->
+        <ion-text color="danger" *ngIf="loginForm.controls['name']?.invalid && loginForm.controls['name']?.touched">
+         Nombre valido.
+        </ion-text>
+
+                        <!-- Input de apellido con icono -->
+        <ion-label class="correo_texto">Apellido</ion-label>
+        <ion-item class="input-item">
+          <ion-input type="name" placeholder="Apellido" [(ngModel)]="apellido" name="apellido" required></ion-input>
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+        </ion-item>
+
+        <!-- Mensaje de error para el apellido -->
+        <ion-text color="danger" *ngIf="loginForm.controls['apellido']?.invalid && loginForm.controls['apellido']?.touched">
+         Apellido valido.
+        </ion-text>
+
+  
+
+        <!-- Input de correo electrónico con icono -->
+        <ion-label class="correo_texto">Correo electrónico</ion-label>
+        <ion-item class="input-item">
+          <ion-input type="email" placeholder="usuario@correo.com" [(ngModel)]="email" name="email" required></ion-input>
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+        </ion-item>
+
+        <!-- Mensaje de error para el correo -->
+        <ion-text color="danger" *ngIf="loginForm.controls['email']?.invalid && loginForm.controls['email']?.touched">
+         Correo electrónico inválido.
+        </ion-text>
+
+        <ion-label class="contra_texto">Contraseña</ion-label>
+        <!-- Input de contraseña con icono -->
+        <ion-item class="input-item">
+          <ion-input type="password" placeholder="••••••••" [(ngModel)]="password" name="password" required></ion-input>
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        </ion-item>
+
+        <!-- Mensaje de error para la contraseña -->
+        <ion-text color="danger" *ngIf="loginForm.controls['password']?.invalid && loginForm.controls['password']?.touched">
+          Contraseña incorrecta
+        </ion-text>
+
+                                      <!-- Input de telefono con icono -->
+        <ion-label class="correo_texto">Telefono</ion-label>
+        <ion-item class="input-item">
+          <ion-input type="name" placeholder="552-123-43-21" [(ngModel)]="telefono" name="telefono" required></ion-input>
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+        </ion-item>
+
+        <!-- Mensaje de error para el correo -->
+        <ion-text color="danger" *ngIf="loginForm.controls['telefono']?.invalid && loginForm.controls['telefono']?.touched">
+         Apellido valido.
+        </ion-text>
+
+        <ion-item>
+          <ion-label>Departamento</ion-label>
+          <ion-select [(ngModel)]="selectedDepartamento" name="departamento">
+            <!-- Usamos el department_id como valor -->
+            <ion-select-option *ngFor="let departamento of departamentos" [value]="departamento.department_id">
+              {{ departamento.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label>Cargo</ion-label>
+          <ion-select [(ngModel)]="selectedPosition" name="position">
+            <!-- Usamos el position_id como valor -->
+            <ion-select-option *ngFor="let position of positions" [value]="position.position_id">
+              {{ position.name }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+
+        <!-- Botón de Ingresar -->
+        <ion-button expand="block" color="primary" type="submit" class="login-button">Registrar Usuario</ion-button>
+
+        <!-- Enlace de recuperación de contraseña -->
+        <ion-text class="forgot-password">
+         
+
+        </ion-text>
+
+      </form>
+
+
+      <ion-button expand="block" color="tertiary" (click)="goToHome()">
+        Ir a Home
+      </ion-button>
+      
+    </div>
+  </div>
+</ion-content>
+
+
+
+
