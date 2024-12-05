@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import axios from 'axios';
-
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 
 @Component({
@@ -16,6 +15,33 @@ export class EmpleadosPage implements OnInit {
   departamentos: any[] = [];
   positions: any[] = [];
   capturedImage: string | undefined;
+
+  // Datos estáticos para respaldo
+  staticData = [
+    {
+      employee_id: 1,
+      first_name: 'Juan',
+      last_name: 'Pérez',
+      email: 'juan.perez@example.com',
+      phone: '123456789',
+      department_name: 'Ventas',
+      position_name: 'Gerente de Ventas',
+      status: 1,
+      capturedImage: undefined,
+    },
+    {
+      employee_id: 2,
+      first_name: 'Ana',
+      last_name: 'Gómez',
+      email: 'ana.gomez@example.com',
+      phone: '987654321',
+      department_name: 'Marketing',
+      position_name: 'Analista de Marketing',
+      status: 0,
+      capturedImage: undefined,
+    },
+  ];
+
   constructor(private alertController: AlertController) {}
 
   ngOnInit() {
@@ -24,15 +50,7 @@ export class EmpleadosPage implements OnInit {
     this.fetchDepartamentos();
   }
 
-  async opciones_newUser() {
-    try {
-      const departamentos_opciones = await axios.get(
-        'http://localhost/quicky_coffee/proyecto_escuela/Departamentos/get_departamentos'
-      );
-    } catch (error) {
-      console.error('Error en opciones_newUser:', error);
-    }
-  }
+  // Función para manejar la cámara
   async takePicture(employeeId: number) {
     try {
       const image = await Camera.getPhoto({
@@ -42,27 +60,16 @@ export class EmpleadosPage implements OnInit {
         source: CameraSource.Camera,
       });
 
-    
       const empleado = this.data_empleados.find(emp => emp.employee_id === employeeId);
-
-      console.log("Yo soy el EMPLEADO . . .", empleado);
-
-
       if (empleado) {
-
-        console.log("Entro en el primer if . .");
-        
         empleado.capturedImage = image.dataUrl; // Asigna la imagen capturada al empleado
       }
-
-      // Aquí podrías enviar la imagen al backend si es necesario
-      // await axios.post('URL_DEL_BACKEND', { employeeId, image: image.dataUrl });
     } catch (error) {
       console.error('Error al capturar imagen:', error);
     }
   }
 
-
+  // Función para editar empleado
   async editarEmpleado(empleado: any) {
     const alert = await this.alertController.create({
       header: 'Editar Empleado',
@@ -79,7 +86,7 @@ export class EmpleadosPage implements OnInit {
         { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Guardar',
-          handler: async (data) => {
+          handler: (data) => {
             const updatedData = {
               employee_id: empleado.employee_id,
               first_name: data.first_name,
@@ -90,20 +97,10 @@ export class EmpleadosPage implements OnInit {
               position_name: data.position_name,
             };
 
-            try {
-              const response = await axios.put(
-                'http://localhost/quicky_coffee/proyecto_escuela/Empleados/editar_empleado',
-                updatedData,
-                { headers: { 'Content-Type': 'application/json' } }
-              );
-
-              if (response.data.status === 'success') {
-                await this.showAlert('Éxito', 'Empleado se editó correctamente.', true);
-              } else {
-                await this.showAlert('Error', 'No se pudo editar el usuario.', false);
-              }
-            } catch (error) {
-              console.error('Error al actualizar el empleado:', error);
+            // Actualiza el empleado en los datos estáticos
+            const index = this.data_empleados.findIndex(emp => emp.employee_id === empleado.employee_id);
+            if (index !== -1) {
+              this.data_empleados[index] = updatedData;
             }
           },
         },
@@ -112,6 +109,7 @@ export class EmpleadosPage implements OnInit {
     await alert.present();
   }
 
+  // Función para agregar nuevo empleado
   async agregarEmpleado() {
     const alert = await this.alertController.create({
       header: 'Agregar nuevo empleado',
@@ -120,69 +118,58 @@ export class EmpleadosPage implements OnInit {
         { name: 'last_name', type: 'text', placeholder: 'Apellidos', value: '' },
         { name: 'email', type: 'email', placeholder: 'Email', value: '' },
         { name: 'phone', type: 'tel', placeholder: 'Teléfono', value: '' },
-        // Separador para Departamentos
-        { name: 'separator', type: 'text', value: '--- Departamentos ---', disabled: true },
-        // Opciones de Departamentos
-        ...this.departamentos.map((dep) => ({
-          name: 'department_id',
-          type: 'radio' as const,
-          label: dep.name,
-          value: dep.department_id,
-        })),
-        // Separador para Posiciones
-        { name: 'separator', type: 'text', value: '--- Posiciones ---', disabled: true },
-        // Opciones de Posiciones
-        ...this.positions.map((pos) => ({
-          name: 'position_id',
-          type: 'radio' as const,
-          label: pos.name,
-          value: pos.position_id,
-        })),
       ],
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Guardar',
-          handler: async (data) => {
+          handler: (data) => {
             const newData = {
+              employee_id: this.data_empleados.length + 1, // Nuevo ID basado en el tamaño del array
               first_name: data.first_name,
               last_name: data.last_name,
               email: data.email,
               phone: data.phone,
-              department_id: data.department_id,
-              position_id: data.position_id,
+              department_name: 1, // Coloca un valor predeterminado
+              position_name: 2, // Coloca un valor predeterminado
+              status: 1,
+              capturedImage: undefined,
             };
-  
-            try {
-              const response = await axios.post(
-                'http://localhost/quicky_coffee/proyecto_escuela/Empleados/agregar_empleado',
-                newData,
-                { headers: { 'Content-Type': 'application/json' } }
-              );
-  
-              if (response.data.status === 'success') {
-                await this.showAlert('Éxito', 'Empleado guardado correctamente.', true);
-              } else {
-                await this.showAlert('Error', 'No se pudo guardar el empleado.', false);
-              }
-            } catch (error) {
-              console.error('Error al guardar empleado:', error);
-              await this.showAlert('Error', 'Hubo un problema con la base de datos.', false);
-            }
+            this.data_empleados.push(newData);
           },
         },
       ],
     });
     await alert.present();
   }
-  
+
+  // Función para eliminar empleado
+  async eliminarEmpleado(id: number) {
+    const alert = await this.alertController.create({
+      header: 'Seguro que quieres borrar el usuario?',
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.data_empleados = this.data_empleados.filter(emp => emp.employee_id !== id);
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  // Funciones para obtener departamentos y posiciones
   async fetchDepartamentos() {
     try {
       const response = await axios.get('http://localhost/quicky_coffee/proyecto_escuela/Empleados/departamentos');
       this.departamentos = response.data;
-      console.log('Departamentos:', this.departamentos);
     } catch (error) {
-      console.error('Error en fetchDepartamentos:', error);
+      this.departamentos = [
+        { department_id: 1, name: 'Ventas' },
+        { department_id: 2, name: 'Marketing' },
+      ];
     }
   }
 
@@ -190,23 +177,25 @@ export class EmpleadosPage implements OnInit {
     try {
       const response = await axios.get('http://localhost/quicky_coffee/proyecto_escuela/Empleados/positions');
       this.positions = response.data;
-      console.log('Positions:', this.positions);
     } catch (error) {
-      console.error('Error en fetchPositions:', error);
+      this.positions = [
+        { position_id: 1, name: 'Gerente' },
+        { position_id: 2, name: 'Analista' },
+      ];
     }
   }
 
+  // Función para obtener los empleados
   async fetchdata_empleados() {
     try {
       const response = await axios.get('http://localhost/quicky_coffee/proyecto_escuela/Empleados/get_empleados');
       this.data_empleados = response.data;
-      console.log('Empleados:', this.data_empleados);
     } catch (error) {
-      this.errorMessage = 'Error fetching data';
-      console.error(error);
+      this.data_empleados = this.staticData;
     }
   }
 
+  // Función para mostrar alertas
   async showAlert(header: string, message: string, reload: boolean = false) {
     const alert = await this.alertController.create({
       header,
@@ -225,6 +214,7 @@ export class EmpleadosPage implements OnInit {
     await alert.present();
   }
 
+  // Función para cambiar el estatus del empleado
   async changeStatus(id: number, estatus: number) {
     const alert = await this.alertController.create({
       header: 'Cambiar estatus del empleado',
@@ -232,53 +222,10 @@ export class EmpleadosPage implements OnInit {
         { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Aceptar',
-          handler: async () => {
-            try {
-              const response = await axios.post(
-                'http://localhost/quicky_coffee/proyecto_escuela/Empleados/changeStatus',
-                { employee_id: id, status: estatus },
-                { headers: { 'Content-Type': 'application/json' } }
-              );
-
-              if (response.data.status === 'success') {
-                await this.showAlert('Éxito', 'Estatus cambiado correctamente.', true);
-              } else {
-                await this.showAlert('Error', 'No se pudo cambiar el estatus.', false);
-              }
-            } catch (error) {
-              console.error('Error al cambiar estatus:', error);
-              await this.showAlert('Error', 'Hubo un problema con la base de datos.', false);
-            }
-          },
-        },
-      ],
-    });
-    await alert.present();
-  }
-
-  async eliminarEmpleado(id: number) {
-    const alert = await this.alertController.create({
-      header: 'Seguro que quieres borrar el usuario?',
-      buttons: [
-        { text: 'Cancelar', role: 'cancel' },
-        {
-          text: 'Aceptar',
-          handler: async () => {
-            try {
-              const response = await axios.post(
-                'http://localhost/quicky_coffee/proyecto_escuela/Empleados/eliminar_empleado',
-                { employee_id: id },
-                { headers: { 'Content-Type': 'application/json' } }
-              );
-
-              if (response.data.status === 'success') {
-                await this.showAlert('Éxito', 'Empleado eliminado correctamente.', true);
-              } else {
-                await this.showAlert('Error', 'No se pudo eliminar el empleado.', false);
-              }
-            } catch (error) {
-              console.error('Error al eliminar empleado:', error);
-              await this.showAlert('Error', 'Hubo un problema con la base de datos.', false);
+          handler: () => {
+            const empleado = this.data_empleados.find(emp => emp.employee_id === id);
+            if (empleado) {
+              empleado.status = estatus === 1 ? 0 : 1;
             }
           },
         },
