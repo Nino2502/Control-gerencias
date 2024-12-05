@@ -2,49 +2,68 @@
   <ion-toolbar>
     <ion-title>Strategia Gerencial</ion-title>
     <ion-buttons slot="end">
-      <ion-button expand="block" routerLink="/inicio">CERRAR SESION</ion-button>
+      <ion-button expand="block" routerLink="/inicio">CERRAR SESIÓN</ion-button>
       <ion-menu-button></ion-menu-button>
-     
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content [fullscreen]="true">
+  <!-- Sección del Clima -->
+  <div class="container weather-container">
+    <div *ngIf="weatherData">
+      <h2>El clima en {{ city }}</h2>
+      <p>🌡️ Temperatura: <strong>{{ weatherData.main.temp }} °C</strong></p>
+      <p>🌤️ Tiempo: <strong>{{ weatherData.weather[0].description }}</strong></p>
+    </div>
+    <div *ngIf="!weatherData">
+      <p>Cargando pronóstico del clima...</p>
+    </div>
+  </div>
 
+  <!-- Sección de Ubicación -->
+  <div class="container location-container">
+    <h2>Tu ubicación actual:</h2>
+    <p><strong>Latitud:</strong> {{ latitude }}</p>
+    <p><strong>Longitud:</strong> {{ longitude }}</p>
+  </div>
 
- 
-    <div class="container">
-      <div *ngIf="weatherData">
-        <h2>El clima en {{ city }}</h2>
-        <p>Temperatura: {{ weatherData.main.temp }} °C</p>
-        <p>Tiempo: {{ weatherData.weather[0].description }}</p>
-      </div>
-      <div *ngIf="!weatherData">
-        <p>Cargando pronostico del clima...</p>
+  <!-- Mapa -->
+  <div class="map-wrapper">
+    <div class="map-container">
+      <google-map
+        [height]="'400px'"
+        [width]="'100%'"
+        [center]="center"
+        [zoom]="zoom"
+      >
+        <map-marker
+          *ngIf="markerPosition"
+          [position]="markerPosition"
+          [options]="markerOptions"
+        ></map-marker>
+      </google-map>
+    </div>
+  </div>
+
+  <!-- Noticias -->
+  <div class="container news-section">
+    <h2>Últimas Noticias</h2>
+    <div class="news-container">
+      <div *ngFor="let article of articles" class="news-card">
+        <img [src]="article.image" alt="News Image" />
+        <div class="content">
+          <h2>{{ article.title }}</h2>
+          <p>{{ article.description }}</p>
+        </div>
       </div>
     </div>
-
-    <div class="container">
-      <h2>Tu ubicación actual:</h2>
-      <p><strong>Latitud:</strong> {{ latitude }}</p>
-      <p><strong>Longitud:</strong> {{ longitude }}</p>
-
-    </div>
-
-    <div class="map-wrapper">
-      <div class="map-container">
-        <google-map
-          [height]="'400%'"
-          [width]="'400%'"
-          [center]="center"
-          [zoom]="zoom"
-        >
-          <map-marker
-            *ngIf="markerPosition"
-            [position]="markerPosition"
-            [options]="markerOptions"
-          ></map-marker>
-        </google-map>
-      </div>
-    </div>
-
+    <!-- Scroll infinito -->
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadNews($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Cargando más noticias..."
+      ></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
 </ion-content>
