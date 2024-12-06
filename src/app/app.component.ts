@@ -1,41 +1,56 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Router } from '@angular/router';  // Importa Router para redirigir
-import { ToastController } from '@ionic/angular';  // Importa el ToastController
+import { Router } from '@angular/router'; // Importa Router para redirección
+import { ToastController } from '@ionic/angular'; // Importa ToastController para mensajes
+import { FcmService } from './services/fcm.service'; // Servicio para notificaciones push
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(
     private navCtrl: NavController,
-    private router: Router,  // Inyecta Router para redirección
-    private toastController: ToastController
+    private router: Router, // Inyección de Router
+    private toastController: ToastController, // Inyección de ToastController
+    private fcmService: FcmService // Servicio de notificaciones push
   ) {}
 
-
-  async cerrarSesion() {
-    // Muestra un Toast antes de cerrar la sesión
-    await this.showToast('¡Cerrando sesión...', 'success');
-
-    this.router.navigate(['/inicio']);
-
-
+  /**
+   * Método que se ejecuta al iniciar la aplicación.
+   * Inicializa las notificaciones push.
+   */
+  ngOnInit() {
+    this.fcmService.initPush();
   }
 
+  /**
+   * Método para cerrar sesión.
+   * Muestra un mensaje de confirmación y redirige a la página de inicio.
+   */
+  async cerrarSesion() {
+    // Muestra un Toast informando del cierre de sesión
+    await this.showToast('¡Cerrando sesión...', 'success');
 
-        // Método para mostrar un Toast
-        async showToast(message: string, color: string) {
-          const toast = await this.toastController.create({
-            message: message,
-            duration: 2000,  // Duración del Toast en milisegundos
-            color: color,    // Puedes usar 'success', 'danger', 'warning', etc.
-            position: 'top'  // Puedes cambiar la posición si es necesario
-          });
-          toast.present();
-        }
+    // Redirige al usuario a la página de inicio
+    this.router.navigate(['/inicio']);
+  }
 
+  /**
+   * Método para mostrar un Toast.
+   * @param message Mensaje a mostrar en el Toast
+   * @param color Color del Toast ('success', 'danger', 'warning', etc.)
+   */
+  async showToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000, // Duración del Toast en milisegundos
+      color: color, // Color del Toast
+      position: 'top', // Posición del Toast
+    });
 
+    // Muestra el Toast
+    await toast.present();
+  }
 }

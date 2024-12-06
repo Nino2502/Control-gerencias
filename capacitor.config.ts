@@ -4,7 +4,12 @@ const config: CapacitorConfig = {
   appId: 'com.controlgerencias.com',
   appName: 'Control-gerencias',
   webDir: 'www',
-  bundledWebRuntime: false // Asegúrate de que este valor esté establecido en false
+  bundledWebRuntime: false,
+  plugins: {
+    PushNotifications: {
+      presentationOptions: ['alert', 'badge', 'sound'],
+    },
+  },
 };
 
 export default config;
