@@ -9,6 +9,9 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
 
 import { GoogleMapsModule } from '@angular/google-maps';
+import { YouTubePlayerModule } from '@angular/youtube-player';
+
+
 
 @NgModule({
   imports: [
@@ -17,6 +20,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
     IonicModule,
     HomePageRoutingModule,
     GoogleMapsModule, 
+    YouTubePlayerModule,
   ],
   declarations: [HomePage]
 })

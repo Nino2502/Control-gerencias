@@ -46,7 +46,7 @@
     </div>
   </div>
 
-  <!-- Noticias -->
+ 
   <div class="container news-section">
     <h2>Últimas Noticias</h2>
     <div class="news-container">
@@ -58,12 +58,29 @@
         </div>
       </div>
     </div>
-    <!-- Scroll infinito -->
+    
     <ion-infinite-scroll threshold="100px" (ionInfinite)="loadNews($event)">
       <ion-infinite-scroll-content
         loadingSpinner="bubbles"
         loadingText="Cargando más noticias..."
       ></ion-infinite-scroll-content>
     </ion-infinite-scroll>
+  </div>
+
+
+
+  <div class="container-youtube">
+    <youtube-player 
+    [videoId]="videoId"
+    [height]="'360'" 
+    [width]="'640'">
+  </youtube-player>
+  
+    <div *ngIf="videoDetails">
+      <h2>{{ videoDetails.snippet.title }}</h2>
+      <p>{{ videoDetails.snippet.description }}</p>
+      <p>Vistas: {{ videoDetails.statistics.viewCount }}</p>
+    </div>
+
   </div>
 </ion-content>

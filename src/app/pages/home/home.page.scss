@@ -13,7 +13,7 @@ ion-content {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Clima */
+
 .weather-container h2 {
   font-size: 1.5rem;
   color: #333;
@@ -23,13 +23,13 @@ ion-content {
   color: #555;
 }
 
-/* Ubicación */
+
 .location-container h2 {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
-/* Mapa */
+
 .map-wrapper {
   display: flex;
   justify-content: center;
@@ -45,14 +45,14 @@ ion-content {
   overflow: hidden;
 }
 
-/* Noticias */
+
 .news-section h2 {
   margin-bottom: 1rem;
   font-size: 1.5rem;
   color: #222;
 }
 
-/* Contenedor Horizontal */
+
 .news-container {
   display: flex;
   flex-direction: row;
@@ -69,7 +69,7 @@ ion-content {
   }
 }
 
-/* Tarjetas de Noticias */
+
 .news-card {
   flex: 0 0 80%;
   max-width: 400px;
@@ -101,4 +101,17 @@ ion-content {
   font-size: 1rem;
   color: #666;
   margin: 0;
+}
+
+#container-youtube{
+  text-align: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px; 
+  margin-left: 50px; 
+  margin-bottom: 50px; 
+  margin-right: 20px;    
+
 }

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { WeatherService } from '../home/weather.service'; // Servicio del clima
-import { Geolocation } from '@capacitor/geolocation'; // Geolocalización
-import { NewsService } from './news.service'; // Servicio de noticias
-import { LocalNotifications } from '@capacitor/local-notifications'; // Notificaciones locales
+import { WeatherService } from '../home/weather.service';
+import { Geolocation } from '@capacitor/geolocation'; 
+import { NewsService } from './news.service'; 
+import { LocalNotifications } from '@capacitor/local-notifications';
+import axios from 'axios';
+
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -10,9 +13,12 @@ import { LocalNotifications } from '@capacitor/local-notifications'; // Notifica
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-  city: string = 'mexico'; // Ciudad por defecto
+
+  videoId: string = 's-cXzJOwWBE';
+  apiKey: string = environment.youtubeApiKey;
+  city: string = 'mexico';
   weatherData: any;
-  center: google.maps.LatLngLiteral = { lat: 0, lng: 0 }; // Coordenadas iniciales
+  center: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
   zoom: number = 12;
   markerOptions: google.maps.MarkerOptions = { draggable: false };
   markerPosition: google.maps.LatLngLiteral | null = null;
@@ -22,6 +28,8 @@ export class HomePage implements OnInit {
   currentPage: number = 1;
   pageSize: number = 10;
   isLoading: boolean = false;
+
+  videoDetails: any;
 
   constructor(
     private weatherService: WeatherService,
@@ -47,6 +55,21 @@ export class HomePage implements OnInit {
       console.error('Error fetching weather data:', error);
     }
   }
+  async fetchVideoDetails() {
+    const apiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${this.videoId}&key=${this.apiKey}&part=snippet,statistics`;
+
+    try {
+      const response = await axios.get(apiUrl);
+      if (response.data.items && response.data.items.length > 0) {
+        this.videoDetails = response.data.items[0];
+        console.log('Detalles del video:', this.videoDetails);
+      }
+    } catch (error) {
+      console.error('Error al obtener los detalles del video:', error);
+    }
+  }
+
+
 
   async getCurrentPosition() {
     try {
