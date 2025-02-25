@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import axios from 'axios';
-import { ToastController } from '@ionic/angular';  // Importa el ToastController
+import { ToastController } from '@ionic/angular';
+import { Auth, signInWithEmailAndPassword } from "@angular/fire/auth";
+import { Firestore, collection, getDocs, query, where, DocumentData } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-inicio',
@@ -12,73 +13,93 @@ export class InicioPage implements OnInit {
   email: string = '';
   password: string = '';
 
+  constructor(
+    private navCtrl: NavController,
+    private toastController: ToastController,
+    private auth: Auth,
+    private firestore: Firestore
+  ) {}
 
-  private apiurl : string = 'http://localhost/quicky_coffee/proyecto_escuela/Acceso/login';
+  ngOnInit() {}
 
-  constructor(private navCtrl: NavController, private toastController: ToastController) {}
-
-  
-  ngOnInit() {
-  }
-
-  async entrar_inicio(){
-
+  async entrar_inicio() {
     console.log("Soy CORREO . . ", this.email);
-
     console.log("Soy PASSWORD . .", this.password);
+
     if (this.email && this.password) {
       try {
-        const response = await axios.post(this.apiurl, {
-          email: this.email,
-          password: this.password,
-        });
 
-        if (response.data.status) {
-          console.log('Inicio de sesión exitoso:', response.data.message);
-           // Muestra un Toast de éxito
-           await this.showToast('¡Inicio de sesión exitoso!', 'success');
+        console.log("Entre en TRYYYY");
 
+        const userCredential = await signInWithEmailAndPassword(this.auth, this.email, this.password);
+        const userId = userCredential.user.uid;
+
+        const usersCollection = collection(this.firestore, 'users');
+        const id_validacion = query(usersCollection, where('id', '==', userId));
+        const consulta = await getDocs(id_validacion);
+
+
+
+        console.log("Soy usersCollection . .", usersCollection);
+        console.log("Soy consulaaaaaaaaa..", consulta);
+
+
+
+
+        
+
+
+        if (!consulta.empty) {
+          const userData: DocumentData = consulta.docs[0].data();
+          console.log("Soy USERDATA de un USUARIOOOO. . ", userData);
+
+
+          
+    
+          localStorage.setItem('userData', JSON.stringify(userData));
+
+          await this.showToast('¡Inicio de sesión exitoso!', 'success');
           this.navCtrl.navigateForward('/home');
         } else {
-          console.log('Error:', response.data.message);
-         
-                  // Muestra un Toast de error si ocurre un problema con la conexión
-        await this.showToast('Error al conectar con el servidor', 'danger');
+          await this.showToast('Usuario no encontrado en la base de datos', 'danger');
         }
       } catch (error) {
-        console.error('Error en la solicitud:', error);
-        alert('Error al conectar con el servidor');
+        console.error('Error en el login:', error);
+        await this.showToast('Error en el inicio de sesión', 'danger');
       }
     } else {
       console.log('Error: Campos vacíos');
-      alert('Por favor completa todos los campos');
+      await this.showToast('Por favor completa todos los campos', 'warning');
     }
   }
 
-    // Método para mostrar un Toast
-    async showToast(message: string, color: string) {
-      const toast = await this.toastController.create({
-        message: message,
-        duration: 2000,  // Duración del Toast en milisegundos
-        color: color,    // Puedes usar 'success', 'danger', 'warning', etc.
-        position: 'top'  // Puedes cambiar la posición si es necesario
-      });
-      toast.present();
+  async getPermissions(role: string): Promise<string[]> {
+    const rolesCollection = collection(this.firestore, 'roles');
+    const q = query(rolesCollection, where('role', '==', role));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const roleData = querySnapshot.docs[0].data();
+      return roleData['permissions'] || [];
     }
-
-
-    goToHome() {
-      this.navCtrl.navigateForward(['/home']);
-    }
-
-    registro_usuario(){
-
-      this.navCtrl.navigateForward(['/registro']);
-      
-    }
-
-
-
-
+    return [];
   }
 
+  async showToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: color,
+      position: 'top'
+    });
+    toast.present();
+  }
+
+  goToHome() {
+    this.navCtrl.navigateForward(['/home']);
+  }
+
+  registro_usuario() {
+    this.navCtrl.navigateForward(['/registro']);
+  }
+}
