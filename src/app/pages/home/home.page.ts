@@ -103,10 +103,7 @@ export class HomePage implements OnInit {
       );
       this.articles.push(...response.articles);
 
-      await this.sendNotification(
-        'Noticias actualizadas',
-        `Se han cargado ${response.articles.length} noticias.`
-      );
+
 
       if (event) {
         event.target.complete();

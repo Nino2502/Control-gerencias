@@ -39,14 +39,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     }),
     YouTubePlayerModule,
   ],
-  providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)), 
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
-    provideStorage(() => getStorage()),
-  
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
