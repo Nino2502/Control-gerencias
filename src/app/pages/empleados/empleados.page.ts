@@ -125,13 +125,13 @@ export class EmpleadosPage implements OnInit {
           text: 'Guardar',
           handler: (data) => {
             const newData = {
-              employee_id: this.data_empleados.length + 1, // Nuevo ID basado en el tamaño del array
+              employee_id: this.data_empleados.length + 1,
               first_name: data.first_name,
               last_name: data.last_name,
               email: data.email,
               phone: data.phone,
-              department_name: 1, // Coloca un valor predeterminado
-              position_name: 2, // Coloca un valor predeterminado
+              department_name: 1,
+              position_name: 2,
               status: 1,
               capturedImage: undefined,
             };

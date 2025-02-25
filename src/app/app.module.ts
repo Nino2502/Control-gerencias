@@ -6,6 +6,16 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+
+import { initializeApp } from 'firebase/app';
+import { provideFirebaseApp, getApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideStorage, getStorage } from '@angular/fire/storage';
+import { environment } from '../environments/environment';
+
+
+
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { GoogleMapsModule } from '@angular/google-maps'; // Importar el módulo de Google Maps
 
@@ -29,7 +39,14 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     }),
     YouTubePlayerModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)), 
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
+  
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
