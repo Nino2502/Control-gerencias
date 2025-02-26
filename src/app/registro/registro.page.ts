@@ -48,15 +48,17 @@ export class RegistroPage implements OnInit {
 
 
 
-  private apiurl : string = 'http://localhost/quicky_coffee/proyecto_escuela/Empleados/agregar_empleado';
 
   constructor(private navCtrl: NavController, private toastController: ToastController, private firestoreService: FirestoreService,private auth: Auth) {}
 
   
-  ngOnInit() {
+  async ngOnInit() {
 
-    this.fetchDepartamentos();
-    this.fetchPositions();
+    this.firestoreService.getCollection<any>('users').subscribe(async data => {
+      this.departamentos = data;
+      console.log('Datos de usuarios:', this.departamentos);
+    });
+
 
   
   
@@ -146,25 +148,7 @@ export class RegistroPage implements OnInit {
       
     }
 
-    async fetchDepartamentos() {
-      try {
-        const response = await axios.get('http://localhost/quicky_coffee/proyecto_escuela/Empleados/departamentos');
-        this.departamentos = response.data;
-        console.log('Departamentos:', this.departamentos);
-      } catch (error) {
-        console.error('Error en fetchDepartamentos:', error);
-      }
-    }
-  
-    async fetchPositions() {
-      try {
-        const response = await axios.get('http://localhost/quicky_coffee/proyecto_escuela/Empleados/positions');
-        this.positions = response.data;
-        console.log('Positions:', this.positions);
-      } catch (error) {
-        console.error('Error en fetchPositions:', error);
-      }
-    }
+
 
 
 
