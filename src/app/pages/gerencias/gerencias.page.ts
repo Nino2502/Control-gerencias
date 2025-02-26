@@ -4,9 +4,10 @@ import axios from 'axios';
 
 
 @Component({
-  selector: 'app-gerencias',
-  templateUrl: './gerencias.page.html',
-  styleUrls: ['./gerencias.page.scss'],
+    selector: 'app-gerencias',
+    templateUrl: './gerencias.page.html',
+    styleUrls: ['./gerencias.page.scss'],
+    standalone: false
 })
 export class GerenciasPage implements OnInit {
 

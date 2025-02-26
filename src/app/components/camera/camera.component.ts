@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 
 @Component({
-  selector: 'app-camera',
-  templateUrl: './camera.component.html',
-  styleUrls: ['./camera.component.scss'],
+    selector: 'app-camera',
+    templateUrl: './camera.component.html',
+    styleUrls: ['./camera.component.scss'],
+    standalone: false
 })
 export class CameraComponent {
   capturedImage: string | undefined;

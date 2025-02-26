@@ -4,9 +4,10 @@ import axios from 'axios';
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 
 @Component({
-  selector: 'app-empleados',
-  templateUrl: './empleados.page.html',
-  styleUrls: ['./empleados.page.scss'],
+    selector: 'app-empleados',
+    templateUrl: './empleados.page.html',
+    styleUrls: ['./empleados.page.scss'],
+    standalone: false
 })
 export class EmpleadosPage implements OnInit {
   data_empleados: any[] = [];

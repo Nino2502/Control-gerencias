@@ -22,11 +22,10 @@ import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 
 
 @Component({
-  selector: 'app-registro',
-  templateUrl: './registro.page.html',
-  styleUrls: ['./registro.page.scss'],
-  standalone: true,
-  imports: [CommonModule, IonicModule, FormsModule]
+    selector: 'app-registro',
+    templateUrl: './registro.page.html',
+    styleUrls: ['./registro.page.scss'],
+    imports: [CommonModule, IonicModule, FormsModule]
 })
 export class RegistroPage implements OnInit {
 

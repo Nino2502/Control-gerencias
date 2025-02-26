@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import axios from 'axios';
 
 @Component({
-  selector: 'app-estructura-organizacional',
-  templateUrl: './estructura-organizacional.page.html',
-  styleUrls: ['./estructura-organizacional.page.scss'],
+    selector: 'app-estructura-organizacional',
+    templateUrl: './estructura-organizacional.page.html',
+    styleUrls: ['./estructura-organizacional.page.scss'],
+    standalone: false
 })
 export class EstructuraOrganizacionalPage implements OnInit {
 

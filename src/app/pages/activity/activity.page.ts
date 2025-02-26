@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { string } from 'mathjs';
 
 @Component({
-  selector: 'app-activity',
-  templateUrl: './activity.page.html',
-  styleUrls: ['./activity.page.scss'],
+    selector: 'app-activity',
+    templateUrl: './activity.page.html',
+    styleUrls: ['./activity.page.scss'],
+    standalone: false
 })
 export class ActivityPage implements OnInit {
 

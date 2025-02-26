@@ -5,9 +5,10 @@ import { Auth, signInWithEmailAndPassword } from "@angular/fire/auth";
 import { Firestore, collection, getDocs, query, where, DocumentData } from '@angular/fire/firestore';
 
 @Component({
-  selector: 'app-inicio',
-  templateUrl: './inicio.page.html',
-  styleUrls: ['./inicio.page.scss'],
+    selector: 'app-inicio',
+    templateUrl: './inicio.page.html',
+    styleUrls: ['./inicio.page.scss'],
+    standalone: false
 })
 export class InicioPage implements OnInit {
   email: string = '';
