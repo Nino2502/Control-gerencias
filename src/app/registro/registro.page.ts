@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms'; 
 
+import { CanActivate, Router } from '@angular/router';
+
 
 
 
@@ -48,19 +50,22 @@ export class RegistroPage implements OnInit {
 
 
 
-  constructor(private navCtrl: NavController, private toastController: ToastController, private firestoreService: FirestoreService,private auth: Auth) {}
+  constructor(private navCtrl: NavController, private router: Router, private toastController: ToastController, private firestoreService: FirestoreService,private auth: Auth) {}
 
   
   async ngOnInit() {
 
-    this.firestoreService.getCollection<any>('users').subscribe(async data => {
+    this.firestoreService.getCollection<any>('departamentos').subscribe(async data => {
       this.departamentos = data;
-      console.log('Datos de usuarios:', this.departamentos);
+      console.log('Datos del departamento:', this.departamentos);
     });
 
 
-  
-  
+    this.firestoreService.getCollection<any>('Position').subscribe(async data => {
+      this.positions = data;
+      console.log('POSITION . . . .:', this.positions);
+    });
+
   }
 
   async registrar_usuario(){
@@ -82,7 +87,7 @@ export class RegistroPage implements OnInit {
     
 
 
-    if (this.email && this.password && this.name && this.apellido && this.telefono) {
+    if (this.email && this.password && this.name && this.apellido && this.telefono && this.selectedDepartamento && this.selectedPosition) {
       try {
         const hashedPassword = await bcrypt.hash(this.password, 10);
         const userCredential = await createUserWithEmailAndPassword(this.auth, this.email, this.password);
@@ -96,23 +101,30 @@ export class RegistroPage implements OnInit {
           name: this.name,
           apellido: this.apellido,
           telefono: this.telefono,
-          department_id: 1,
-          position_id: 1
+          department_id: this.selectedDepartamento,
+          position_id: this.selectedPosition
         }
         this.usuarios.push(nuevo_usuario);
 
+
+        console.log("Imprimeme nuevos usuaruis . . ", this.usuarios);
+
+
+    
+         
 
         this.firestoreService.addDocument('users', nuevo_usuario);
 
 
 
-        console.log("Imprimeme nuevos usuaruis . . ", this.usuarios);
+        
 
         
         // Mostrar mensaje de éxito
         this.showToast('Usuario registrado exitosamente en la base de datos!', 'success');
 
 
+        this.router.navigate(['/inicio']);
        
 
       } catch (error) {

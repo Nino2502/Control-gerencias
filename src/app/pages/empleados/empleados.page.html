@@ -21,13 +21,13 @@
   <ion-list *ngIf="data_empleados.length > 0">
     <ion-item *ngFor="let empleado of data_empleados">
       <ion-label>
-        <h3><strong>ID:</strong> {{ empleado.employee_id }}</h3>
-        <p><strong>Nombre:</strong> {{ empleado.first_name }}</p>
-        <p><strong>Apellidos: </strong> {{ empleado.last_name }}</p>
+        <h3><strong>ID:</strong> {{ empleado.id }}</h3>
+        <p><strong>Nombre:</strong> {{ empleado.name }}</p>
+        <p><strong>Apellidos: </strong> {{ empleado.apellido}}</p>
         <p><strong>Email: </strong> {{ empleado.email }}</p>
-        <p><strong>Phone: </strong> {{ empleado.phone }}</p>
-        <p><strong>Departamento:</strong> {{ empleado.department_name }}</p>
-        <p><strong>Posicion: </strong>{{ empleado.position_name }}</p>
+        <p><strong>Phone: </strong> {{ empleado.telefono }}</p>
+        <p><strong>Departamento:</strong> {{ empleado.department_id }}</p>
+        <p><strong>Posicion: </strong>{{ empleado.position_id }}</p>
         
           <!-- Mostrar imagen capturada -->
      

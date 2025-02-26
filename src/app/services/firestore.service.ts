@@ -11,16 +11,11 @@ export class FirestoreService {
   constructor(private firestore: Firestore) {}
 
   getCollection<T>(collectionName: string): Observable<T[]> {
-    console.log("collection name", collectionName);
-    const ref = collection(this.firestore, collectionName);
-    collectionData(ref).pipe(
-      map( (response: any) => {
-        console.log(response);
-      })
-    );
-    return collectionData<any>(ref);
-  }
 
+    const ref = collection(this.firestore, collectionName);
+    return collectionData(ref, { idField: 'id' }) as Observable<T[]>;
+  
+  }
 
   addDocument(collectionName: string, data: any) {
     const ref = collection(this.firestore, collectionName);

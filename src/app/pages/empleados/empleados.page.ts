@@ -3,6 +3,11 @@ import { AlertController } from '@ionic/angular';
 import axios from 'axios';
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 
+
+
+import { FirestoreService } from '.././../services/firestore.service';
+
+
 @Component({
     selector: 'app-empleados',
     templateUrl: './empleados.page.html',
@@ -43,7 +48,7 @@ export class EmpleadosPage implements OnInit {
     },
   ];
 
-  constructor(private alertController: AlertController) {}
+  constructor(private alertController: AlertController, private firestoreService: FirestoreService) {}
 
   ngOnInit() {
     this.fetchdata_empleados();
@@ -72,37 +77,58 @@ export class EmpleadosPage implements OnInit {
 
   // Función para editar empleado
   async editarEmpleado(empleado: any) {
+
+    console.log("Soy empleados . . para editar bb", empleado);
+
+  
     const alert = await this.alertController.create({
       header: 'Editar Empleado',
       inputs: [
-        { name: 'employee_id', type: 'text', placeholder: 'ID', value: empleado.employee_id, disabled: true },
-        { name: 'first_name', type: 'text', placeholder: 'Nombre', value: empleado.first_name },
-        { name: 'last_name', type: 'text', placeholder: 'Apellidos', value: empleado.last_name },
+        { name: 'employee_id', type: 'text', placeholder: 'ID', value: empleado.id, disabled: true },
+        { name: 'first_name', type: 'text', placeholder: 'Nombre', value: empleado.name },
+        { name: 'last_name', type: 'text', placeholder: 'Apellidos', value: empleado.apellido },
         { name: 'email', type: 'email', placeholder: 'Email', value: empleado.email },
-        { name: 'phone', type: 'tel', placeholder: 'Teléfono', value: empleado.phone },
-        { name: 'department_name', type: 'text', placeholder: 'Departamento', value: empleado.department_name },
-        { name: 'position_name', type: 'text', placeholder: 'Posición', value: empleado.position_name },
+        { name: 'phone', type: 'tel', placeholder: 'Teléfono', value: empleado.telefono },
+        { name: 'department_name', type: 'text', placeholder: 'Departamento', value: empleado.department_id },
+        { name: 'position_name', type: 'text', placeholder: 'Posición', value: empleado.position_id },
       ],
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Guardar',
-          handler: (data) => {
-            const updatedData = {
-              employee_id: empleado.employee_id,
-              first_name: data.first_name,
-              last_name: data.last_name,
-              email: data.email,
-              phone: data.phone,
-              department_name: data.department_name,
-              position_name: data.position_name,
-            };
+          handler: async (data) => {
 
-            // Actualiza el empleado en los datos estáticos
-            const index = this.data_empleados.findIndex(emp => emp.employee_id === empleado.employee_id);
-            if (index !== -1) {
-              this.data_empleados[index] = updatedData;
+            try{
+
+              const updatedData = {
+                id: empleado.id,
+                name: data.first_name.toUpperCase().trim().toLowerCase(),
+                apellido: data.last_name.toUpperCase().trim().toLowerCase(),
+                email: data.email,
+                telefono: data.phone,
+                department_id: data.department_name,
+                position_id: data.position_name,
+                status: 1
+              };
+
+              console.log("Soi los datos de los USUARIOS. .  .", updatedData);
+              await this.firestoreService.updateDocument('users', empleado.id, updatedData);
+   
+              this.showAlert("Usuario se registro exitosamente!!", "success");
+
+              return true;
+            
+
+            } catch(error){
+
+              console.error("Error al registrar usuario:", error);
+              this.showAlert("Error al registrar usuario", "danger");
+              return false;
+
+
             }
+  
+   
           },
         },
       ],
@@ -189,8 +215,15 @@ export class EmpleadosPage implements OnInit {
   // Función para obtener los empleados
   async fetchdata_empleados() {
     try {
-      const response = await axios.get('http://localhost/quicky_coffee/proyecto_escuela/Empleados/get_empleados');
-      this.data_empleados = response.data;
+
+
+      this.firestoreService.getCollection<any>('users').subscribe(async data => {
+        this.data_empleados = data;
+        console.log('Datos del departamento:', this.data_empleados);
+      });
+
+
+
     } catch (error) {
       this.data_empleados = this.staticData;
     }

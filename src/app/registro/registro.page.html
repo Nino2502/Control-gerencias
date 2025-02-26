@@ -73,8 +73,8 @@
           <ion-label>Departamento</ion-label>
           <ion-select [(ngModel)]="selectedDepartamento" name="departamento">
             <!-- Usamos el department_id como valor -->
-            <ion-select-option *ngFor="let departamento of departamentos" [value]="departamento.department_id">
-              {{ departamento.name }}
+            <ion-select-option *ngFor="let departamento of departamentos" [value]="departamento.nombre_dep">
+              {{ departamento.nombre_dep }}
             </ion-select-option>
           </ion-select>
         </ion-item>
@@ -83,8 +83,8 @@
           <ion-label>Cargo</ion-label>
           <ion-select [(ngModel)]="selectedPosition" name="position">
             <!-- Usamos el position_id como valor -->
-            <ion-select-option *ngFor="let position of positions" [value]="position.position_id">
-              {{ position.name }}
+            <ion-select-option *ngFor="let position of positions" [value]="position.nom_posti">
+              {{ position.nom_posti }}
             </ion-select-option>
           </ion-select>
         </ion-item>
