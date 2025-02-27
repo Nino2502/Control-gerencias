@@ -102,7 +102,8 @@ export class RegistroPage implements OnInit {
           apellido: this.apellido,
           telefono: this.telefono,
           department_id: this.selectedDepartamento,
-          position_id: this.selectedPosition
+          position_id: this.selectedPosition,
+          status: 1
         }
         this.usuarios.push(nuevo_usuario);
 
