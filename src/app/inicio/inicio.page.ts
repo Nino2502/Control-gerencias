@@ -4,6 +4,9 @@ import { ToastController } from '@ionic/angular';
 import { Auth, signInWithEmailAndPassword } from "@angular/fire/auth";
 import { Firestore, collection, getDocs, query, where, DocumentData } from '@angular/fire/firestore';
 
+import { AuthService } from '../services/auth.service';
+
+
 @Component({
     selector: 'app-inicio',
     templateUrl: './inicio.page.html',
@@ -18,7 +21,8 @@ export class InicioPage implements OnInit {
     private navCtrl: NavController,
     private toastController: ToastController,
     private auth: Auth,
-    private firestore: Firestore
+    private firestore: Firestore,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {}
@@ -34,6 +38,10 @@ export class InicioPage implements OnInit {
 
         const userCredential = await signInWithEmailAndPassword(this.auth, this.email, this.password);
         const userId = userCredential.user.uid;
+
+        this.authService.setAuthToken(userId);
+        
+
 
         const usersCollection = collection(this.firestore, 'users');
         const id_validacion = query(usersCollection, where('id', '==', userId));

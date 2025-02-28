@@ -3,9 +3,14 @@ import { WeatherService } from '../home/weather.service';
 import { Geolocation } from '@capacitor/geolocation'; 
 import { NewsService } from './news.service'; 
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { NavController } from '@ionic/angular';
 import axios from 'axios';
 
 import { environment } from 'src/environments/environment';
+
+import { AuthService } from '../../services/auth.service';
+
+
 
 @Component({
     selector: 'app-home',
@@ -34,13 +39,21 @@ export class HomePage implements OnInit {
 
   constructor(
     private weatherService: WeatherService,
-    private newsService: NewsService
+    private newsService: NewsService,
+    private authService: AuthService,
+    private navCtrl: NavController,
   ) {}
 
   async ngOnInit() {
-    await this.getCurrentPosition(); // Obtener ubicación actual
-    this.getWeatherData(); // Obtener datos del clima
-    this.loadNews(); // Cargar noticias
+    await this.getCurrentPosition();
+
+    this.getWeatherData();
+    this.loadNews();
+    if (!this.authService.isAuthenticated()) {
+      this.navCtrl.navigateRoot('/inicio'); // Redirigir a login si no está autenticado
+    }
+  
+  
   }
 
   async getWeatherData() {
