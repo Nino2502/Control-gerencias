@@ -12,8 +12,10 @@ export class AuthService {
     return !!localStorage.getItem('authToken');
   }
 
-  setAuthToken(token: string) {
+  setAuthToken(userId: string) {
+    const token = `TOKEN-${userId}`;
     localStorage.setItem('authToken', token);
+    return token;
   }
 
 

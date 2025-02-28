@@ -15,16 +15,16 @@
   </ion-header>
   <ion-content>
 
-    <div *ngIf="data.length === 0" class="cero-gerencias">
+    <div *ngIf="data_gerencias.length === 0" class="cero-gerencias">
       <p>No Hay gerencias</p>
 
     </div>
     <ion-list>
-      <ion-item *ngFor="let gerencias of data;">
+      <ion-item *ngFor="let gerencias of data_gerencias;">
         <ion-label>
           <h2>{{ gerencias.id }}</h2>
-          <h3>{{ gerencias.nombre }}</h3>
-          <p>{{ gerencias.descripcion}}</p>
+          <h3>{{ gerencias.nombre_dep }}</h3>
+          <p>{{ gerencias.des_dep}}</p>
         </ion-label>
 
         <ion-button fill="clear" color="secondary" (click)="editarGerencias(gerencias)">

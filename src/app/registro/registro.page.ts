@@ -112,7 +112,7 @@ export class RegistroPage implements OnInit {
 
 
     
-         
+   
 
         this.firestoreService.addDocument('users', nuevo_usuario);
 

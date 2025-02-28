@@ -3,6 +3,11 @@ import { AlertController } from '@ionic/angular';
 import axios from 'axios';
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 
+import * as bcrypt from 'bcryptjs';
+
+
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 
 
 import { FirestoreService } from '.././../services/firestore.service';
@@ -48,7 +53,7 @@ export class EmpleadosPage implements OnInit {
     },
   ];
 
-  constructor(private alertController: AlertController, private firestoreService: FirestoreService) {}
+  constructor(private alertController: AlertController, private firestoreService: FirestoreService,private auth: Auth) {}
 
   ngOnInit() {
     this.fetchdata_empleados();
@@ -138,31 +143,42 @@ export class EmpleadosPage implements OnInit {
 
   // Función para agregar nuevo empleado
   async agregarEmpleado() {
+
+
     const alert = await this.alertController.create({
       header: 'Agregar nuevo empleado',
       inputs: [
         { name: 'first_name', type: 'text', placeholder: 'Nombre', value: '' },
         { name: 'last_name', type: 'text', placeholder: 'Apellidos', value: '' },
-        { name: 'email', type: 'email', placeholder: 'Email', value: '' },
+        { name: 'email', type: 'email', placeholder: 'Email', value: ''},
+        { name: 'password', type: 'password', placeholder: 'Contraseña', value: '' },
         { name: 'phone', type: 'tel', placeholder: 'Teléfono', value: '' },
+        { name: 'department_name', type: 'text', placeholder: 'Departamento', value: '' },
+        { name: 'position_name', type: 'text', placeholder: 'Posición', value: '' },
       ],
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Guardar',
-          handler: (data) => {
+          handler: async (data) => {
+
+                 const hashedPassword = await bcrypt.hash(data.password, 10);
+                 const userCredential = await createUserWithEmailAndPassword(this.auth, data.email, data.password);
+                const userId = userCredential.user.uid;
             const newData = {
-              employee_id: this.data_empleados.length + 1,
-              first_name: data.first_name,
-              last_name: data.last_name,
+              id: userId,
+              name: data.first_name.toUpperCase().trim().toLowerCase(),
+              apellido: data.last_name.toUpperCase().trim().toLowerCase(),
               email: data.email,
-              phone: data.phone,
-              department_name: 1,
-              position_name: 2,
-              status: 1,
-              capturedImage: undefined,
+              telefono: data.phone,
+              department_id: data.department_name,
+              position_id: data.position_name,
+              status: 1
+  
             };
             this.data_empleados.push(newData);
+
+            this.firestoreService.addDocument('users', newData);
           },
         },
       ],

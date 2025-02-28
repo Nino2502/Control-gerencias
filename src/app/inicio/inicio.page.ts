@@ -39,8 +39,19 @@ export class InicioPage implements OnInit {
         const userCredential = await signInWithEmailAndPassword(this.auth, this.email, this.password);
         const userId = userCredential.user.uid;
 
-        this.authService.setAuthToken(userId);
+        const token = this.authService.setAuthToken(userId);
+        console.log("Soy TOKEN GENERADOoooooOO . ", token);
         
+
+        console.log("Soy TOKEN GENERADO . ", this.authService.setAuthToken(userId));
+
+        console.log("Token en localStorage:", localStorage.getItem('authToken'));
+
+
+      
+
+      
+
 
 
         const usersCollection = collection(this.firestore, 'users');

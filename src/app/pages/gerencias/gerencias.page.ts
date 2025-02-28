@@ -1,6 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import axios from 'axios';
+import * as bcrypt from 'bcryptjs';
+
+
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+
+
+import { FirestoreService } from '.././../services/firestore.service';
+
 
 
 @Component({
@@ -11,35 +20,34 @@ import axios from 'axios';
 })
 export class GerenciasPage implements OnInit {
 
-  data: any[] = [];
+  data_gerencias: any[] = [];
   newItem: string = '';
   errorMessage : string = '';
 
 
-  constructor(private alertController: AlertController) { }
+  constructor(private alertController: AlertController,private firestoreService: FirestoreService ) { }
 
   ngOnInit() {
-    this.fetchData();
-  }
+ 
 
-  async fetchData(){
+    try {
 
-    try{
-      const response = await axios.get('http://localhost/quicky_coffee/gerencias/Gerencias/get_gerencias');
 
-      this.data = response.data;
+      this.firestoreService.getCollection<any>('departamentos').subscribe(async data => {
+        this.data_gerencias = data;
+        console.log('Datos del departamento:', this.data_gerencias);
+      });
 
-      console.log("Soy dato de gerencias . ", this.data);
 
-      
-    }catch(error){
-      this.errorMessage = 'Error fetching data';
-      console.log(error);
 
+    } catch (error) {
+      this.data_gerencias = [];
 
     }
 
   }
+
+
 
   async editarGerencias(gerencias: any){
 

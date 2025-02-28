@@ -84,6 +84,18 @@ export class HomePage implements OnInit {
   }
 
 
+  cerrar_sesion(){
+
+
+    console.log("Soy cerrar seson . .");
+
+    localStorage.removeItem('authToken');
+    this.navCtrl.navigateRoot('/inicio');
+
+
+  }
+
+
 
   async getCurrentPosition() {
     try {

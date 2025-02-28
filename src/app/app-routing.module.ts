@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   {
    path: 'home',
-   loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
+   loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule), canActivate: [AuthGuard]
   },
   {
    path: 'activity',
@@ -31,7 +33,8 @@ const routes: Routes = [
   {
     path: 'estructura-organizacional',
     loadChildren: () => import('./pages/estructura-organizacional/estructura-organizacional.module').then( m => m.EstructuraOrganizacionalPageModule)
-  },  {
+  },
+  {
     path: 'registro',
     loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
   },
