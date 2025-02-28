@@ -91,6 +91,9 @@ export class HomePage implements OnInit {
 
     localStorage.removeItem('authToken');
     this.navCtrl.navigateRoot('/inicio');
+    setTimeout(() => {
+      location.reload();
+    }, 500);
 
 
   }
