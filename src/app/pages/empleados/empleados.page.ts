@@ -187,7 +187,9 @@ export class EmpleadosPage implements OnInit {
   }
 
   // Función para eliminar empleado
-  async eliminarEmpleado(id: number) {
+  async eliminarEmpleado(id: string) {
+    console.log("Soy Eliminar Usuarios  . .", id);
+
     const alert = await this.alertController.create({
       header: 'Seguro que quieres borrar el usuario?',
       buttons: [
@@ -195,7 +197,7 @@ export class EmpleadosPage implements OnInit {
         {
           text: 'Aceptar',
           handler: () => {
-            this.data_empleados = this.data_empleados.filter(emp => emp.employee_id !== id);
+            this.firestoreService.deleteDocument('users', id);
           },
         },
       ],
