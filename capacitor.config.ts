@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.controlgerencias.com',
+  appId: 'com.controlgerencias.gerco',
   appName: 'Control-gerencias',
   webDir: 'www',
   bundledWebRuntime: false,
