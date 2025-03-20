@@ -38,7 +38,7 @@
     "@capacitor/push-notifications": "^6.0.3",
     "@capacitor/status-bar": "6.0.1",
     "@ionic/angular": "^8.0.0",
-    "axios": "^1.7.7",
+    "axios": "^1.8.4",
     "bcryptjs": "^3.0.2",
     "evaluacion1": "file:",
     "firebase": "^11.3.1",

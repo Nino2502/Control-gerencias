@@ -23,8 +23,8 @@
       <ion-item *ngFor="let gerencias of data_gerencias;">
         <ion-label>
           <h2>{{ gerencias.id }}</h2>
-          <h3>{{ gerencias.nombre_dep }}</h3>
-          <p>{{ gerencias.des_dep}}</p>
+          <h3>{{ gerencias.nombre }}</h3>
+          <p>{{ gerencias.descripcion}}</p>
         </ion-label>
 
         <ion-button fill="clear" color="secondary" (click)="editarGerencias(gerencias)">

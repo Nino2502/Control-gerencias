@@ -13,6 +13,8 @@ import { CanActivate, Router } from '@angular/router';
 
 
 
+
+
 import { FirestoreService } from '../services/firestore.service';
 
 
@@ -55,6 +57,8 @@ export class RegistroPage implements OnInit {
   
   async ngOnInit() {
 
+    /*
+
     this.firestoreService.getCollection<any>('departamentos').subscribe(async data => {
       this.departamentos = data;
       console.log('Datos del departamento:', this.departamentos);
@@ -66,7 +70,63 @@ export class RegistroPage implements OnInit {
       console.log('POSITION . . . .:', this.positions);
     });
 
+    */
+   this.get_roles();
+
+   this.get_depar();
+
+
+
+
   }
+
+
+
+
+  async get_roles() {
+
+    interface Role {
+      nombre: string;
+      descripcion: string;
+    }
+
+
+    try {
+      const response = await axios.get<{ roles: Role[] }>(
+        'https://app-api-basica-188817112506.us-central1.run.app/roles'
+      );
+      this.positions = response.data.roles;
+      console.log('Roles obtenidos:', this.positions);
+    } catch (error: any) {
+      console.error('Error al obtener los roles:', error.message);
+      console.error('Código de error:', error.code);
+      console.error('Detalles de la solicitud:', error.config);
+    }
+  }
+
+  async get_depar(){
+    interface Depa {
+      nombre: string;
+      descripcion: string;
+    }
+
+
+    try {
+      const response = await axios.get<{ departamentos: Depa[] }>(
+        'https://app-api-basica-188817112506.us-central1.run.app/departamentos'
+      );
+      this.departamentos = response.data.departamentos;
+      console.log('Los departamentos obtenidos:', this.departamentos);
+
+
+    } catch (error: any) {
+      console.error('Error al obtener los roles:', error.message);
+      console.error('Código de error:', error.code);
+      console.error('Detalles de la solicitud:', error.config);
+    }
+
+  }
+  
 
   async registrar_usuario(){
 

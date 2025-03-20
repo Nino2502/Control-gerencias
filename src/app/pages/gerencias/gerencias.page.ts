@@ -29,7 +29,9 @@ export class GerenciasPage implements OnInit {
 
   ngOnInit() {
  
-
+    this.get_depar();
+    
+    /*
     try {
 
 
@@ -43,6 +45,29 @@ export class GerenciasPage implements OnInit {
     } catch (error) {
       this.data_gerencias = [];
 
+    }
+    */
+  }
+
+  async get_depar(){
+    interface Depa {
+      nombre: string;
+      descripcion: string;
+    }
+
+
+    try {
+      const response = await axios.get<{ departamentos: Depa[] }>(
+        'https://app-api-basica-188817112506.us-central1.run.app/departamentos'
+      );
+      this.data_gerencias = response.data.departamentos;
+      console.log('Los departamentos obtenidos:', this.data_gerencias);
+
+
+    } catch (error: any) {
+      console.error('Error al obtener los roles:', error.message);
+      console.error('Código de error:', error.code);
+      console.error('Detalles de la solicitud:', error.config);
     }
 
   }
