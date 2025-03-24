@@ -12,33 +12,7 @@ export class EstructuraOrganizacionalPage implements OnInit {
   data_estructura: any[] = [];
   errorMessage: string = '';
 
-  // Datos estáticos como respaldo
-  fallbackData = [
-    {
-      employee_name: 'Juan Pérez',
-      position_name: 'Gerente de Ventas',
-      department_name: 'Ventas',
-      start_date: '2020-01-15',
-      end_date: null,
-      status: '1',
-    },
-    {
-      employee_name: 'Ana Gómez',
-      position_name: 'Analista de Marketing',
-      department_name: 'Marketing',
-      start_date: '2019-06-01',
-      end_date: null,
-      status: '1',
-    },
-    {
-      employee_name: 'Carlos Díaz',
-      position_name: 'Desarrollador Backend',
-      department_name: 'IT',
-      start_date: '2021-03-20',
-      end_date: '2023-05-01',
-      status: '0',
-    },
-  ];
+  
 
   constructor() { }
 
@@ -48,22 +22,26 @@ export class EstructuraOrganizacionalPage implements OnInit {
 
   async get_estructura() {
     try {
-      const response = await axios.get('http://localhost/quicky_coffee/proyecto_escuela/Estructura/estructura_info');
-      this.data_estructura = response.data;
+      const response = await axios.get('https://app-api-basica-188817112506.us-central1.run.app/roles');
 
-      if (!this.data_estructura || this.data_estructura.length === 0) {
-        // Si no hay datos en la respuesta, usa los datos de respaldo
-        this.data_estructura = this.fallbackData;
-      }
+      this.data_estructura = response.data.roles;
+
+
+
 
       console.log("Datos obtenidos: ", this.data_estructura);
 
     } catch (error) {
       this.errorMessage = 'Error fetching data, showing fallback data';
       console.log(error);
-      // En caso de error, usa los datos de respaldo
-      this.data_estructura = this.fallbackData;
+  
     }
+  }
+
+  async agregar_rol(){
+
+    console.log("Soy agregar rol chidote pa´ apoco no?");
+    
   }
 
 }
