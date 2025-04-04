@@ -41,7 +41,11 @@ const routes: Routes = [
   {
     path: 'profile',
     loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+  },  {
+    path: 'aviso-privacidad',
+    loadChildren: () => import('./aviso-privacidad/aviso-privacidad.module').then( m => m.AvisoPrivacidadPageModule)
   },
+
 
 
 

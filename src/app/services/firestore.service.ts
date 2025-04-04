@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, addDoc, doc, getDoc, deleteDoc, updateDoc, Timestamp} from '@angular/fire/firestore';
 import { map, Observable } from 'rxjs';
 
+
+
 import {query, where, getDocs } from "firebase/firestore"; 
 
 @Injectable({
@@ -18,7 +20,13 @@ export class FirestoreService {
   }
 
   addDocument(collectionName: string, data: any) {
+    console.log("Entre a agregar docuemtno.a.....jaja");
+
+    
     const ref = collection(this.firestore, collectionName);
+    
+    console.log("Soy Ref . . . ", ref);
+
     return addDoc(ref, data);
     
   }

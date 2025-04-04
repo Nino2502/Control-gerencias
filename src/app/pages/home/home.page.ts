@@ -2,15 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { WeatherService } from '../home/weather.service';
 import { Geolocation } from '@capacitor/geolocation'; 
 import { NewsService } from './news.service'; 
-import { LocalNotifications } from '@capacitor/local-notifications';
 import { NavController } from '@ionic/angular';
 import axios from 'axios';
-
 import { environment } from 'src/environments/environment';
-
 import { AuthService } from '../../services/auth.service';
-
-
 
 @Component({
     selector: 'app-home',
@@ -34,7 +29,6 @@ export class HomePage implements OnInit {
   currentPage: number = 1;
   pageSize: number = 10;
   isLoading: boolean = false;
-
   videoDetails: any;
 
   constructor(
@@ -46,29 +40,22 @@ export class HomePage implements OnInit {
 
   async ngOnInit() {
     await this.getCurrentPosition();
-
     this.getWeatherData();
     this.loadNews();
     if (!this.authService.isAuthenticated()) {
       this.navCtrl.navigateRoot('/inicio'); // Redirigir a login si no está autenticado
     }
-  
-  
   }
 
   async getWeatherData() {
     try {
       this.weatherData = await this.weatherService.getWeather(this.city);
       console.log('Weather Data:', this.weatherData);
-
-      await this.sendNotification(
-        'Clima cargado',
-        `El clima de ${this.city} es: ${this.weatherData.weather[0].description}`
-      );
     } catch (error) {
       console.error('Error fetching weather data:', error);
     }
   }
+
   async fetchVideoDetails() {
     const apiUrl = `https://www.googleapis.com/youtube/v3/videos?id=${this.videoId}&key=${this.apiKey}&part=snippet,statistics`;
 
@@ -83,39 +70,23 @@ export class HomePage implements OnInit {
     }
   }
 
-
   cerrar_sesion(){
-
-
-    console.log("Soy cerrar seson . .");
-
+    console.log("Soy cerrar sesion . .");
     localStorage.removeItem('authToken');
     this.navCtrl.navigateRoot('/inicio');
     setTimeout(() => {
       location.reload();
     }, 500);
-
-
   }
-
-
 
   async getCurrentPosition() {
     try {
       const position = await Geolocation.getCurrentPosition();
       this.latitude = position.coords.latitude;
       this.longitude = position.coords.longitude;
-
       this.center = { lat: this.latitude, lng: this.longitude };
       this.markerPosition = this.center;
-
       console.log('Ubicación actual:', this.center);
-
-      // Enviar notificación con la ubicación
-      await this.sendNotification(
-        'Ubicación actual',
-        `Latitud: ${this.latitude}, Longitud: ${this.longitude}`
-      );
     } catch (error) {
       console.error('Error obteniendo ubicación:', error);
     }
@@ -132,8 +103,6 @@ export class HomePage implements OnInit {
       );
       this.articles.push(...response.articles);
 
-
-
       if (event) {
         event.target.complete();
       }
@@ -146,36 +115,6 @@ export class HomePage implements OnInit {
     } finally {
       this.isLoading = false;
       this.currentPage++;
-    }
-  }
-
-  // Método para enviar notificaciones locales
-  async sendNotification(title: string, body: string) {
-    // Solicitar permisos de notificación
-    const permissions = await LocalNotifications.checkPermissions();
-    
-    if (permissions.display !== 'granted') {
-      const permissionRequest = await LocalNotifications.requestPermissions();
-      if (permissionRequest.display === 'denied') {
-        alert('Permiso denegado para notificaciones');
-        return;
-      }
-    }
-
-    // Programar la notificación
-    try {
-      await LocalNotifications.schedule({
-        notifications: [
-          {
-            title: title,
-            body: body,
-            id: new Date().getTime(), // ID único usando timestamp
-            schedule: { at: new Date(new Date().getTime() + 1000) }, // Notificación programada para 1 segundo después
-          },
-        ],
-      });
-    } catch (error) {
-      console.error('Error al programar la notificación:', error);
     }
   }
 }

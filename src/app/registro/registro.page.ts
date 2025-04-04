@@ -168,6 +168,8 @@ export class RegistroPage implements OnInit {
         this.usuarios.push(nuevo_usuario);
 
 
+        console.log("Soy nuevo usuario para agregar collection . .",nuevo_usuario);
+        
         console.log("Imprimeme nuevos usuaruis . . ", this.usuarios);
 
 
@@ -177,7 +179,7 @@ export class RegistroPage implements OnInit {
         this.firestoreService.addDocument('users', nuevo_usuario);
 
 
-
+        
         
 
         
